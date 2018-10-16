@@ -1,5 +1,6 @@
 package com.nbank.study;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.tencent.smtt.sdk.QbSdk;
+import com.tencent.smtt.sdk.TbsListener;
 
 import java.io.File;
 
@@ -15,6 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ico.ico.ico.BaseFragActivity;
+import ico.ico.util.DialogUtil;
 import ico.ico.util.log;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -46,7 +49,7 @@ public class TbsActivity extends BaseFragActivity implements TbsHelper.TbsListen
 
     @AfterPermissionGranted(RC_P_TBS)
     public void initQbSdk() {
-        tbsHelper.init(false);
+        tbsHelper.init(true);
     }
 
 
@@ -161,6 +164,14 @@ public class TbsActivity extends BaseFragActivity implements TbsHelper.TbsListen
     @Override
     public void onInitFail(int statusCode) {
         showToast("初始化失败，" + tbsHelper.getErrCodeMessage(statusCode));
+        if (statusCode == TbsListener.ErrorCode.NETWORK_NOT_WIFI_ERROR) {
+            DialogUtil.createAlert(mActivity, "提示", "当前不处于Wi-Fi网络环境下，是否立即下载X5内核", "稍后再试", null, "立即下载", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    tbsHelper.init(false);
+                }
+            }).show();
+        }
     }
 
     @Override
