@@ -15,6 +15,8 @@ public class MainActivity extends BaseFragActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+
     }
 
     @OnClick(R.id.btn_camera)

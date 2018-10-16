@@ -3,14 +3,12 @@ package com.nbank.study;
 import android.Manifest;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.tencent.smtt.sdk.QbSdk;
-import com.tencent.smtt.sdk.TbsListener;
-import com.tencent.smtt.sdk.TbsReaderView;
-import com.tencent.smtt.sdk.ValueCallback;
 
 import java.io.File;
 
@@ -18,13 +16,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ico.ico.ico.BaseFragActivity;
-import ico.ico.util.Common;
 import ico.ico.util.log;
+import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class TbsActivity extends BaseFragActivity {
+public class TbsActivity extends BaseFragActivity implements TbsHelper.TbsListener {
 
-    Boolean init = false;
+    /** RequestCodePermission TBS */
+    final static int RC_P_TBS = 100;
+
+    TbsHelper tbsHelper;
     Runnable waitTask;
 
     @BindView(R.id.layout_readview)
@@ -38,50 +39,15 @@ public class TbsActivity extends BaseFragActivity {
         setContentView(R.layout.activity_tbs);
         ButterKnife.bind(this);
 
+        tbsHelper = new TbsHelper(mActivity, this);
+        if (checkPermission()) return;
+        initQbSdk();
+    }
 
-        if (!EasyPermissions.hasPermissions(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE)) {
-            EasyPermissions.requestPermissions(mActivity, "需要权限才可以读取本地文件哦", 0, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE);
-        }
 
-        QbSdk.setTbsListener(new TbsListener() {
-            @Override
-            public void onDownloadFinish(int i) {
-                log.w("onDownloadFinish");
-            }
-
-            @Override
-            public void onInstallFinish(int i) {
-                log.w("onInstallFinish");
-            }
-
-            @Override
-            public void onDownloadProgress(int i) {
-                log.w("onDownloadProgress");
-            }
-        });
-
-        QbSdk.initX5Environment(this, new QbSdk.PreInitCallback() {
-            @Override
-            public void onCoreInitFinished() {
-                log.w("onCoreInitFinished");
-            }
-
-            @Override
-            public void onViewInitFinished(boolean b) {
-                log.w("onViewInitFinished:" + b + "|" + QbSdk.getTBSInstalling());
-                if (!b) {
-                    if (QbSdk.getTBSInstalling())
-                        QbSdk.initX5Environment(TbsActivity.this, this);
-                } else {
-                    synchronized (init) {
-                        init = true;
-                        if (waitTask != null) {
-                            mHandler.postDelayed(waitTask, 2000);
-                        }
-                    }
-                }
-            }
-        });
+    @AfterPermissionGranted(RC_P_TBS)
+    public void initQbSdk() {
+        tbsHelper.init(false);
     }
 
 
@@ -93,13 +59,11 @@ public class TbsActivity extends BaseFragActivity {
     final String filePath = "/storage/emulated/0/tencent/MicroMsg/Download/陈方毅劳动合同.pdf";
 //    final String filePath = "/storage/emulated/0/tencent/MicroMsg/Download/订餐服务.docx";
 
-    /* 使用sdk打开本地文件，需要手机安装有QQ浏览器，然后加载pdf插件总是加载失败 */
+    /* 使用sdk打开本地文件，需要手机安装有QQ浏览器或者微信，然后加载pdf插件总是加载失败 */
     @OnClick(R.id.btn_pdf)
     public void onClickPDF() {
-        if (!EasyPermissions.hasPermissions(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE)) {
-            EasyPermissions.requestPermissions(mActivity, "需要权限才可以读取本地文件哦", 0, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE);
-            return;
-        }
+        if (checkPermission()) return;
+
         String filePath = obtainFilePath();
         if (TextUtils.isEmpty(filePath)) {
             mActivity.showToast("文件不存在");
@@ -110,33 +74,20 @@ public class TbsActivity extends BaseFragActivity {
             @Override
             public void run() {
                 log.w("onClickPDF Runnable is run");
-                QbSdk.openFileReader(mActivity, TbsActivity.this.filePath, null, new ValueCallback<String>() {
-                    @Override
-                    public void onReceiveValue(String s) {
-                        log.w("onReceiveValue：" + s);
-                    }
-                });
+                tbsHelper.openFileOuter(filePath);
             }
         };
-        synchronized (init) {
-            if (!init) {
-                waitTask = _task;
-            } else {
-                mHandler.post(_task);
-            }
+        if (QbSdk.isTbsCoreInited()) {
+            mHandler.post(_task);
+        } else {
+            waitTask = _task;
         }
     }
 
-    /** 应用内打开本地文件需要使用TbsReaderView，由于构造函数原因只能这code创建然后addView */
-    TbsReaderView tbsReaderView;
 
     /** 应用内打开本地文件 */
     @OnClick(R.id.btn_pdf_inner)
     public void onClickPDFInner() {
-        if (!EasyPermissions.hasPermissions(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE)) {
-            EasyPermissions.requestPermissions(mActivity, "需要权限才可以读取本地文件哦", 0, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE);
-            return;
-        }
         String filePath = obtainFilePath();
         if (TextUtils.isEmpty(filePath)) {
             mActivity.showToast("文件不存在");
@@ -146,36 +97,45 @@ public class TbsActivity extends BaseFragActivity {
             @Override
             public void run() {
                 log.w("onClickPDFInner Runnable is run");
-                //初始化控件
-                if (tbsReaderView == null) {
-                    TbsReaderView _tbsReaderView = new TbsReaderView(mActivity, new TbsReaderView.ReaderCallback() {
-                        @Override
-                        public void onCallBackAction(Integer integer, Object o, Object o1) {
-                            log.w("onCallBackAction");
-                        }
-                    });
-                    layoutReadview.addView(_tbsReaderView, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-                    tbsReaderView = _tbsReaderView;
+                try {
+                    tbsHelper.openFileInner(layoutReadview, filePath, Environment.getExternalStorageDirectory() + "/temp");
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                    showToast(e.getMessage());
                 }
-                //构造数据包
-                Bundle data = new Bundle();
-                data.putString(TbsReaderView.KEY_FILE_PATH, filePath);
-                data.putString(TbsReaderView.KEY_TEMP_PATH, Environment.getExternalStorageDirectory() + "/temp");
-                //检查文件是否受到支持
-                boolean flag = tbsReaderView.preOpen(Common.getSuffix(filePath), false);
-                //如果支持则显示文件
-                if (flag) tbsReaderView.openFile(data);
-                //java.io.FileNotFoundException: /data/user/0/com.nbank.study/cache/optlist.ser (No such file or directory)
+
             }
         };
-        synchronized (init) {
-            if (!init) {
-                waitTask = _task;
-            } else {
-                mHandler.post(_task);
-            }
+        if (QbSdk.isTbsCoreInited()) {
+            mHandler.post(_task);
+        } else {
+            waitTask = _task;
         }
     }
+
+
+    //region 权限相关
+
+    /**
+     * 检查权限
+     *
+     * @return boolean 是否需要请求
+     */
+    private boolean checkPermission() {
+        if (!EasyPermissions.hasPermissions(mActivity, TbsHelper.PERMISSIONS)) {
+            EasyPermissions.requestPermissions(mActivity, "需要权限才可以读取本地文件哦", RC_P_TBS, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+    //endregion
+
 
     /** 获取文本输入框中的文件路径 */
     private String obtainFilePath() {
@@ -188,8 +148,25 @@ public class TbsActivity extends BaseFragActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (tbsReaderView != null) {
-            tbsReaderView.onStop();
+        tbsHelper.onDestory();
+    }
+
+    //region Tbs监听
+    @Override
+    public void onInitSuccess() {
+        if (waitTask != null) {
+            mHandler.post(waitTask);
         }
     }
+
+    @Override
+    public void onInitFail(int statusCode) {
+        showToast("初始化失败，" + tbsHelper.getErrCodeMessage(statusCode));
+    }
+
+    @Override
+    public void onDownloadProgress(int progress) {
+        showToast("正在下载X5内核，进度：" + progress);
+    }
+    //endregion
 }
