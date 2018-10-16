@@ -1,6 +1,5 @@
 package com.nbank.study;
 
-import android.Manifest;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -123,7 +122,7 @@ public class TbsActivity extends BaseFragActivity implements TbsHelper.TbsListen
      */
     private boolean checkPermission() {
         if (!EasyPermissions.hasPermissions(mActivity, TbsHelper.PERMISSIONS)) {
-            EasyPermissions.requestPermissions(mActivity, "需要权限才可以读取本地文件哦", RC_P_TBS, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE);
+            EasyPermissions.requestPermissions(mActivity, "需要权限才可以读取本地文件哦", RC_P_TBS, TbsHelper.PERMISSIONS);
             return true;
         }
         return false;
