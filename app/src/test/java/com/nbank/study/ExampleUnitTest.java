@@ -3,10 +3,6 @@ package com.nbank.study;
 import org.junit.Test;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Scanner;
 
 import ico.ico.util.Common;
@@ -48,7 +44,7 @@ public class ExampleUnitTest {
         System.out.println("请输入：");
         str = input.nextLine();
         try {
-            System.out.println(Common.toMD5(str));
+            System.out.println(Common.encodeByMd5(str));
             System.out.println(Common.toMd5(str));
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();

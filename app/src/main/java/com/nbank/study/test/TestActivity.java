@@ -33,7 +33,7 @@ public class TestActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 super.afterTextChanged(s);
                 try {
-                    String str1 = Common.toMD5(s.toString());
+                    String str1 = Common.encodeByMd5(s.toString());
                     tvMd5.setText(str1);
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();

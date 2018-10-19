@@ -2,7 +2,6 @@ package ico.ico.ico;
 
 import org.junit.Test;
 
-import java.io.File;
 import java.util.Scanner;
 
 import ico.ico.util.Common;
@@ -22,7 +21,7 @@ public class ExampleUnitTest {
 //        do {
             System.out.println("请输入：");
             str = input.next();
-            System.out.println(Common.toMD5(str));
+            System.out.println(Common.encodeByMd5(str));
             System.out.println(Common.toMd5(str));
 //        } while (!str.equals("exit"));
     }

@@ -439,7 +439,7 @@ public class Common {
         String androidID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         String id = androidID + Build.SERIAL;
         try {
-            return toMD5(id);
+            return encodeByMd5(id);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return id;
@@ -2416,7 +2416,7 @@ public class Common {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public static String toMD5(String text) throws NoSuchAlgorithmException {
+    public static String encodeByMd5(String text) throws NoSuchAlgorithmException {
         //获取摘要器 MessageDigest
         MessageDigest messageDigest = MessageDigest.getInstance("MD5");
         //通过摘要器对字符串的二进制字节数组进行hash计算
