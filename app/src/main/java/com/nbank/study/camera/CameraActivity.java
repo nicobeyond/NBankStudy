@@ -1,4 +1,4 @@
-package com.nbank.study;
+package com.nbank.study.camera;
 
 import android.Manifest;
 import android.content.Context;
@@ -17,6 +17,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
+
+import com.nbank.study.R;
 
 import java.io.File;
 import java.io.FileOutputStream;

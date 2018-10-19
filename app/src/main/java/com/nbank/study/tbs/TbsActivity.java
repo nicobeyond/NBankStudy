@@ -1,4 +1,4 @@
-package com.nbank.study;
+package com.nbank.study.tbs;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.nbank.study.R;
 import com.tencent.smtt.sdk.QbSdk;
 import com.tencent.smtt.sdk.TbsListener;
 

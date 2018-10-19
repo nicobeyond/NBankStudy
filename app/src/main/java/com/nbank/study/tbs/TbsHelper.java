@@ -1,4 +1,4 @@
-package com.nbank.study;
+package com.nbank.study.tbs;
 
 import android.Manifest;
 import android.content.Context;
