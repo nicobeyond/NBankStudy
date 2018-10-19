@@ -34,7 +34,8 @@
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppFullscreenTheme" />
         <activity android:name=".tbs.TbsActivity" />
-        <activity android:name=".cipher.SqlCipherActivity"></activity>
+        <activity android:name=".cipher.SqlCipherActivity" />
+        <activity android:name=".test.TestActivity"></activity>
     </application>
 
 </manifest>

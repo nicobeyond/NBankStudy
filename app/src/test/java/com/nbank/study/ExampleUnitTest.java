@@ -2,10 +2,14 @@ package com.nbank.study;
 
 import org.junit.Test;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Scanner;
+
+import ico.ico.util.Common;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -16,7 +20,7 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
 
-        List<Integer> intList = Arrays.asList(2, 3, 1, 6, 4, 5);
+        /*List<Integer> intList = Arrays.asList(2, 3, 1, 6, 4, 5);
         System.out.println("before sort:" + intList.toString());
         System.out.println("=========================");
         int[] d = new int[]{2, 3, 1, 6, 4, 5};
@@ -37,6 +41,17 @@ public class ExampleUnitTest {
                 //231645 321645 123645 623145 423165 523164
             }
         });
-        System.out.println("after sort:" + intList.toString());
+        System.out.println("after sort:" + intList.toString());*/
+
+        Scanner input = new Scanner(System.in);
+        String str = "";
+        System.out.println("请输入：");
+        str = input.nextLine();
+        try {
+            System.out.println(Common.toMD5(str));
+            System.out.println(Common.toMd5(str));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
     }
 }

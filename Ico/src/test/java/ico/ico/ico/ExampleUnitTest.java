@@ -1,11 +1,11 @@
 package ico.ico.ico;
 
-import ico.ico.constant.RingTypeEnum;
-import ico.ico.util.Common;
-
 import org.junit.Test;
 
 import java.io.File;
+import java.util.Scanner;
+
+import ico.ico.util.Common;
 
 /**
  * To work on unit tests, switch the Test Artifact in the Build Variants view.
@@ -16,8 +16,15 @@ public class ExampleUnitTest {
 
 //        System.out.println(RingTypeEnum.ALARM.getIndex() + "");
 
-        String name = Common.getFilename(new File("/dsadas/dasdas/dasdas.pdf"));
-        System.out.println(name);
+//        String name = Common.getFilename(new File("/dsadas/dasdas/dasdas.pdf"));
+        Scanner input = new Scanner(System.in);
+        String str = "";
+//        do {
+            System.out.println("请输入：");
+            str = input.next();
+            System.out.println(Common.toMD5(str));
+            System.out.println(Common.toMd5(str));
+//        } while (!str.equals("exit"));
     }
 
 }

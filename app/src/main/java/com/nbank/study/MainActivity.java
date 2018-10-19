@@ -7,6 +7,7 @@ import android.view.View;
 import com.nbank.study.camera.CameraActivity;
 import com.nbank.study.cipher.SqlCipherActivity;
 import com.nbank.study.tbs.TbsActivity;
+import com.nbank.study.test.TestActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -34,5 +35,10 @@ public class MainActivity extends BaseFragActivity {
     @OnClick(R.id.btn_encrypt)
     public void onClickCipher(View v) {
         startActivity(new Intent(this, SqlCipherActivity.class));
+    }
+
+    @OnClick(R.id.btn_test)
+    public void onClickTest(View v) {
+        startActivity(new Intent(this, TestActivity.class));
     }
 }
