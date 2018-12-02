@@ -2,10 +2,7 @@ package com.nbank.study;
 
 import org.junit.Test;
 
-import java.security.NoSuchAlgorithmException;
-import java.util.Scanner;
-
-import ico.ico.util.Common;
+import ico.ico.helper.WebViewHelper;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -39,15 +36,28 @@ public class ExampleUnitTest {
         });
         System.out.println("after sort:" + intList.toString());*/
 
-        Scanner input = new Scanner(System.in);
-        String str = "";
-        System.out.println("请输入：");
-        str = input.nextLine();
-        try {
-            System.out.println(Common.encodeByMd5(str));
-            System.out.println(Common.toMd5(str));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+//        Scanner input = new Scanner(System.in);
+//        String str = "";
+//        System.out.println("请输入：");
+//        str = input.nextLine();
+//        try {
+//            System.out.println(Common.encodeByMd5(str));
+//            System.out.println(Common.toMd5(str));
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        }
+
+//        StringBuffer _params = new StringBuffer();
+//        _params.append(",");
+//        if (_params.length() != 0) {
+//            if (",".equals(_params.charAt(_params.length() - 1) + "")) {
+//                _params.deleteCharAt(_params.length() - 1);
+//            }
+//        }
+//        System.out.println("===" + _params.toString());
+
+
+        String d = WebViewHelper.genJsCode("dasdasd(das,dasd)");
+        System.out.println("=="+d);
     }
 }

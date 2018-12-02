@@ -1,6 +1,7 @@
 package com.nbank.study.camera;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -11,11 +12,15 @@ import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.AppOpsManagerCompat;
+import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 import android.view.WindowManager;
 
 import com.nbank.study.R;
@@ -35,39 +40,141 @@ import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import ico.ico.ico.BaseFragActivity;
 import ico.ico.util.Common;
+import ico.ico.util.WindowHelper;
 import ico.ico.util.log;
+import pub.devrel.easypermissions.EasyPermissions;
 
-public class CameraActivity extends BaseFragActivity implements SurfaceHolder.Callback, Camera.PreviewCallback {
+public class CameraActivity extends BaseFragActivity implements EasyPermissions.PermissionCallbacks, SurfaceHolder.Callback, Camera.PreviewCallback {
     @BindView(R.id.preview)
     SurfaceView preview;
     SurfaceHolder holder;
 
+
+    WindowHelper windowHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_camera);
         ButterKnife.bind(this);
+
+        windowHelper = new WindowHelper(getWindow());
+        windowHelper
+                .setWindowImmersive()
+//                .setNaviHide()
+//                .setNaviTranslucent()
+//                .setStatusTranslucent()
+//                .setWindowFull()
+        ;
 
         log.w("onCreate: " + getResources().getDisplayMetrics().widthPixels + "|" + getResources().getDisplayMetrics().heightPixels);
 
         holder = preview.getHolder();
         holder.addCallback(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.CAMERA}, 1);
-            }
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            }
 
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-            }
+        log.w("===" + EasyPermissions.hasPermissions(this, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE));
+        log.w("===" + hasPermissions(this, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE));
+        log.w("===" + checkCameraPermission(this));
+
+
+        if (!EasyPermissions.hasPermissions(this, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            EasyPermissions.requestPermissions(this, "", 0x001, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
+        } else if (!hasPermissions(this, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            EasyPermissions.requestPermissions(this, "", 0x001, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
+        } else if (!checkCameraPermission(this)) {
+            EasyPermissions.requestPermissions(this, "", 0x001, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
         }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//                requestPermissions(new String[]{Manifest.permission.CAMERA}, 1);
+//            }
+//            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+//            }
+//
+//            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+//            }
+//        }
     }
 
+    private boolean check() {
+        if (!EasyPermissions.hasPermissions(this, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            EasyPermissions.requestPermissions(this, "", 0x001, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
+            return true;
+        } else {
+            if (!hasPermissions(this, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                EasyPermissions.requestPermissions(this, "", 0x001, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean checkCameraPermission(Context context) {  //检查拍照权限 ,写入文件，读出文件权限
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            //CAMERA  WRITE_EXTERNAL_STORAGE  READ_EXTERNAL_STORAGE 权限
+            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                    1);
+        } else if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            //CAMERA  WRITE_EXTERNAL_STORAGE  READ_EXTERNAL_STORAGE 权限
+            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                    1);
+        } else if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            //CAMERA  WRITE_EXTERNAL_STORAGE  READ_EXTERNAL_STORAGE 权限
+            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                    1);
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 系统层的权限判断
+     *
+     * @param context     上下文
+     * @param permissions 申请的权限 Manifest.permission.READ_CONTACTS
+     * @return 是否有权限 ：其中有一个获取不了就是失败了
+     */
+    public static boolean hasPermissions(@NonNull Context context, @NonNull String... permissions) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true;
+        for (String permission : permissions) {
+            String op = AppOpsManagerCompat.permissionToOp(permission);
+            if (TextUtils.isEmpty(op)) continue;
+            int result = AppOpsManagerCompat.noteProxyOp(context, op, context.getPackageName());
+            if (result == AppOpsManagerCompat.MODE_IGNORED) return false;
+            result = ContextCompat.checkSelfPermission(context, permission);
+            if (result != PackageManager.PERMISSION_GRANTED) return false;
+        }
+        return true;
+    }
+
+
+    //region permission
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        log.w("onPermissionsGranted");
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        log.w("onPermissionsDenied");
+    }
+    //endregion
+
     @OnClick(R.id.preview)
-    public void clickFocus(){
+    public void clickFocus() {
         camera.autoFocus(new Camera.AutoFocusCallback() {
             @Override
             public void onAutoFocus(boolean success, Camera camera) {
@@ -295,7 +402,7 @@ public class CameraActivity extends BaseFragActivity implements SurfaceHolder.Ca
             fixPreviewResolution();
             camera.setPreviewCallback(this);
             camera.startPreview();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -307,10 +414,14 @@ public class CameraActivity extends BaseFragActivity implements SurfaceHolder.Ca
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        camera.stopPreview();
-        camera.setPreviewCallback(null);
-        camera.release();
-        camera = null;
+        try {
+            camera.stopPreview();
+            camera.setPreviewCallback(null);
+            camera.release();
+            camera = null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     //endregion
 
