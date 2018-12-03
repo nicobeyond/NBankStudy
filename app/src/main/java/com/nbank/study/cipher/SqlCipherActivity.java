@@ -86,8 +86,9 @@ public class SqlCipherActivity extends BaseFragActivity {
 
     @OnClick(R.id.btn_encrypt)
     public void encrypt() {
-        if (sqliteEncryptOpenHelper == null)
+        if (sqliteEncryptOpenHelper == null) {
             sqliteEncryptOpenHelper = new SqliteEncryptOpenHelper(mActivity, "base.db", null, 2, "xiaoshang");
+        }
 
         try {
             StringBuilder sb = new StringBuilder();

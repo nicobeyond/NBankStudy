@@ -40,7 +40,7 @@ import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import ico.ico.ico.BaseFragActivity;
 import ico.ico.util.Common;
-import ico.ico.util.WindowHelper;
+import ico.ico.helper.WindowHelper;
 import ico.ico.util.log;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -142,14 +142,22 @@ public class CameraActivity extends BaseFragActivity implements EasyPermissions.
      * @return 是否有权限 ：其中有一个获取不了就是失败了
      */
     public static boolean hasPermissions(@NonNull Context context, @NonNull String... permissions) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true;
+        }
         for (String permission : permissions) {
             String op = AppOpsManagerCompat.permissionToOp(permission);
-            if (TextUtils.isEmpty(op)) continue;
+            if (TextUtils.isEmpty(op)) {
+                continue;
+            }
             int result = AppOpsManagerCompat.noteProxyOp(context, op, context.getPackageName());
-            if (result == AppOpsManagerCompat.MODE_IGNORED) return false;
+            if (result == AppOpsManagerCompat.MODE_IGNORED) {
+                return false;
+            }
             result = ContextCompat.checkSelfPermission(context, permission);
-            if (result != PackageManager.PERMISSION_GRANTED) return false;
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
         }
         return true;
     }
@@ -204,7 +212,9 @@ public class CameraActivity extends BaseFragActivity implements EasyPermissions.
      * 根据屏幕旋转角度，校准摄像头角度
      */
     public void fixPreviewRotation() {
-        if (camera == null) return;
+        if (camera == null) {
+            return;
+        }
         //﻿手机中竖屏状态下的角度为0，以逆时针旋转为正值
         int angle = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
         Camera.Parameters param = camera.getParameters();
@@ -236,7 +246,9 @@ public class CameraActivity extends BaseFragActivity implements EasyPermissions.
 
     //region  校准摄像头预览分辨率
     public void fixPreviewResolution() {
-        if (camera == null) return;
+        if (camera == null) {
+            return;
+        }
         //摄像头参数对象
         Camera.Parameters parameters = camera.getParameters();
 

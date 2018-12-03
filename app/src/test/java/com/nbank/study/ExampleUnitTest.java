@@ -2,8 +2,6 @@ package com.nbank.study;
 
 import org.junit.Test;
 
-import ico.ico.helper.WebViewHelper;
-
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
@@ -57,7 +55,84 @@ public class ExampleUnitTest {
 //        System.out.println("===" + _params.toString());
 
 
-        String d = WebViewHelper.genJsCode("dasdasd(das,dasd)");
-        System.out.println("=="+d);
+//        String das = "0123456789abcdefABCDEF";
+//        boolean flag = das.matches("[0-9a-fA-F]+");
+//        System.out.println("===" + flag);
+
+//        String d = WebViewHelper.genJsCode("dasdasd(das,dasd)");
+//        System.out.println("=="+d);
+
+
+        IThread thread1 = new IThread() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 100; i++) {
+                    System.out.println("i==" + i);
+                    if (i == 10) {
+                        sleeps(this);
+                    }
+                }
+                System.out.println("------------------");
+            }
+
+            public void sleeps(IThread thread) {
+                try {
+                    thread.sleeps(10000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        IThread thread2 = new IThread() {
+            @Override
+            public void run() {
+                for (int j = 0; j < 10; j++) {
+                    System.out.println("j==" + j);
+                }
+//                System.out.println("------------------");
+//                thread1.waits(100000);
+//                System.out.println("------------------");
+            }
+        };
+        thread1.start();
+//        thread2.start();
+    }
+
+    public class IThread extends Thread {
+        public void sleeps(long time) {
+            try {
+                this.sleep(time);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void waits(long time) {
+            synchronized (this) {
+                try {
+                    this.wait(time);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static void sleep(Thread thread) {
+        try {
+            thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void wait(Thread thread) {
+        synchronized (thread) {
+            try {
+                thread.wait(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

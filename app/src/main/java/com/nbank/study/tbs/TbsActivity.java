@@ -43,7 +43,9 @@ public class TbsActivity extends BaseFragActivity implements TbsHelper.TbsListen
         ButterKnife.bind(this);
 
         tbsHelper = new TbsHelper(mActivity, this);
-        if (checkPermission()) return;
+        if (checkPermission()) {
+            return;
+        }
         initQbSdk();
     }
 
@@ -65,7 +67,9 @@ public class TbsActivity extends BaseFragActivity implements TbsHelper.TbsListen
     /* 使用sdk打开本地文件，需要手机安装有QQ浏览器或者微信，然后加载pdf插件总是加载失败 */
     @OnClick(R.id.btn_pdf)
     public void onClickPDF() {
-        if (checkPermission()) return;
+        if (checkPermission()) {
+            return;
+        }
 
         String filePath = obtainFilePath();
         if (TextUtils.isEmpty(filePath)) {
@@ -144,7 +148,9 @@ public class TbsActivity extends BaseFragActivity implements TbsHelper.TbsListen
     private String obtainFilePath() {
         String _filePath = et_file.getText().toString();
         File file = new File(_filePath);
-        if (!file.exists()) return null;
+        if (!file.exists()) {
+            return null;
+        }
         return _filePath;
     }
 

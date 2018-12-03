@@ -212,7 +212,9 @@ public class TbsHelper {
         //检查文件是否受到支持, 不支持直接抛出异常
         String suffix = Common.getSuffix(filePath);
         boolean flag = mTbsReaderView.preOpen(Common.getSuffix(filePath), false);
-        if (!flag) throw new IllegalAccessException(suffix + "文件格式不支持");
+        if (!flag) {
+            throw new IllegalAccessException(suffix + "文件格式不支持");
+        }
         /* 执行打开操作 */
         //构造数据包
         Bundle data = new Bundle();
