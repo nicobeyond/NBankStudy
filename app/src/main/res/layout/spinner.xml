@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:paddingRight="10dp"
+    android:gravity="right"
+    android:maxLines="2"
+    android:textColor="#464589"
+    android:textSize="16dp" />
+    <!-- @drawable/text_color  字体颜色  Old  @author:wangcheng -->

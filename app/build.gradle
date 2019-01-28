@@ -32,32 +32,57 @@ android {
             abiFilters 'armeabi'
         }
     }
+//    signingConfigs {
+//        debug {
+//            storeFile file('../yitong.keystore')
+//            storePassword 'android'
+//            keyAlias 'androiddebugkey'
+//            keyPassword 'android'
+//        }
+//
+//        release {
+//            storeFile file('../yitong.keystore')
+//            storePassword 'android'
+//            keyAlias 'androiddebugkey'
+//            keyPassword 'android'
+//        }
+//    }
     buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.release
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.release
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 }
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation project(':Ico')
     //65535
     api 'com.android.support:multidex:1.0.1'
-
     api 'net.zetetic:android-database-sqlcipher:3.5.6'
-
     // 腾讯vassonic   https://github.com/Tencent/VasSonic/blob/master/sonic-android/README.md
     api 'com.tencent.sonic:sdk:3.0.0'
     // 添加emas-services插件
-//    classpath 'com.aliyun.ams:emas-services:1.0.1'
-//    api "com.github.hotchemi:permissionsdispatcher:+"
-//    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:+"
+    //    classpath 'com.aliyun.ams:emas-services:1.0.1'
+    //    api "com.github.hotchemi:permissionsdispatcher:+"
+    //    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:+"
+    //butterknife https://github.com/JakeWharton/butterknife 需要放到app的module才有用
+    implementation 'com.jakewharton:butterknife:9.0.0-rc1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc1'
+//    implementation project(':IcoCamera')
 }

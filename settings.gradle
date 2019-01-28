@@ -1,2 +1,4 @@
 include ':app'
 include ':Ico'
+//include ':IcoCamera'
+include ':lib'

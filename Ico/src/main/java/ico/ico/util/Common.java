@@ -42,7 +42,6 @@ import android.os.Vibrator;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
@@ -438,7 +437,7 @@ public class Common {
         String androidID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         String id = androidID + Build.SERIAL;
         try {
-            return encodeByMd5(id);
+            return StringUtil.encodeByMd5(id);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return id;
@@ -452,6 +451,12 @@ public class Common {
     public static boolean isScreenOn(Context context) {
         PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         return powerManager.isScreenOn();
+    }
+
+    /** 获取屏幕密度 */
+    public static float getScreenDensity(Context context) {
+        // 屏幕密度（0.75 / 1.0 / 1.5/ 2.0/3.0）
+        return context.getResources().getDisplayMetrics().density;
     }
 
     /** 获取当前手机屏幕的宽度，px值 */
@@ -474,7 +479,7 @@ public class Common {
     /** 获取当前手机屏幕真实的宽度，px值,包含虚拟导航栏 */
     public static int getScreenRealWidth(Activity activity) {
         Display display = activity.getWindowManager().getDefaultDisplay();
-        return Common.getScreenRealMetrics(display).widthPixels;
+        return getScreenRealMetrics(display).widthPixels;
     }
 
     /** 获取当前手机屏幕真实的高度，px值,包含虚拟导航栏 */
@@ -483,7 +488,7 @@ public class Common {
         //1---
 //        return Common.getScreenRealSize(display).y;
         //2---
-        return Common.getScreenRealMetrics(display).heightPixels;
+        return getScreenRealMetrics(display).heightPixels;
     }
 
     /** 获取真实的屏幕Metrics */
@@ -1991,137 +1996,6 @@ public class Common {
 
     //endregion
 
-    //region ************************************************************************************************字符串处理
-
-    /**
-     * 将字符串转化为MD5
-     *
-     * @param text
-     * @return
-     * @throws NoSuchAlgorithmException
-     */
-    public static String encodeByMd5(String text) throws NoSuchAlgorithmException {
-        //获取摘要器 MessageDigest
-        MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-        //通过摘要器对字符串的二进制字节数组进行hash计算
-        byte[] digest = messageDigest.digest(text.getBytes());
-        return Common.bytes2Int16("", digest);
-    }
-
-    /**
-     * 将一个字符串数组根据某个字符串连接
-     * <p>
-     * 为了解耦合，这个函数有其他分支，以下列出分支
-     * <p>
-     * {@link log#concat(String, String...)}
-     *
-     * @param str   要插入的字符串
-     * @param texts 要被拼接的字符串数组,如果传入null或者空数组，则将返回空字符串
-     * @return
-     */
-    public static String concat(String str, String... texts) {
-        if (texts == null || texts.length == 0) return "";
-        if (texts.length == 1) return texts[0];
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < texts.length; i++) {
-            String tmp = texts[i];
-            sb.append(tmp);
-            if (i < texts.length - 1) {
-                sb.append(str);
-            }
-        }
-        return sb.toString();
-    }
-
-    /**
-     * 将一个字符串数组根据某个字符串连接
-     *
-     * @param texts
-     * @param str
-     */
-    public static String concat(String str, List<String> texts) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < texts.size(); i++) {
-            String tmp = texts.get(i);
-            sb.append(tmp);
-            if (i < texts.size() - 1) {
-                sb.append(str);
-            }
-        }
-        return sb.toString();
-    }
-
-    /**
-     * 将多个字节数组进行拼接
-     *
-     * @param buffer
-     * @return
-     */
-    public static byte[] fit(byte[]... buffer) {
-        //计算数据总长度
-        int length = 0;
-        for (int i = 0; i < buffer.length; i++) {
-            length += buffer[i].length;
-        }
-        byte[] datas = new byte[length];
-        //依次进行copy
-        int sp = 0;//起始存放位置
-        for (int i = 0; i < buffer.length; i++) {
-            System.arraycopy(buffer[i], 0, datas, sp, buffer[i].length);
-            sp += buffer[i].length;
-        }
-        return datas;
-    }
-
-    /**
-     * 将一个字符串根据指定长度进行分割
-     * <p>
-     * 为了解耦合，这个函数有其他分支，以下列出分支
-     * <p>
-     * {@link log#split(String, int)}
-     *
-     * @param str  要分割的字符串，如果传入的是个null值，则将拼接 空字符串 添加到集合中进行返回
-     * @param size 指定的长度，分割的每个部分保证不大于这个长度
-     * @return List(String) 返回一个集合，集合必定不为空并且至少有一个数据
-     */
-    @NonNull
-    public static List<String> split(String str, int size) {
-        List<String> data = new ArrayList<>();
-        if (TextUtils.isEmpty(str) || str.length() <= size) {
-            data.add(str + "");
-            return data;
-        }
-        while (true) {
-            if (str.length() > size) {
-                data.add(str.substring(0, size));
-            } else {
-                data.add(str);
-                break;
-            }
-            str = str.substring(size);
-        }
-        return data;
-    }
-
-    /**
-     * 每隔几个字符插入一个指定字符
-     *
-     * @param s        原字符串
-     * @param iStr     要插入的字符串
-     * @param interval 间隔字符数量
-     * @return
-     */
-    public static String insert(String s, String iStr, int interval) {
-        StringBuffer s1 = new StringBuffer(s);
-        int index;
-        for (index = interval; index < s1.length(); index += (interval + 1)) {
-            s1.insert(index, iStr);
-        }
-        return s1.toString();
-    }
-
-    //endregion
-
     //region ************************************************************************************************集合处理
 
     /**
@@ -2137,4 +2011,13 @@ public class Common {
         return false;
     }
     //endregion
+
+    /**
+     * 检查手机是否支持HCE功能
+     *
+     * @return false-不支持HCE;true-支持且打开
+     */
+    public static boolean hasNfcHce(Context context) {
+        return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_NFC_HOST_CARD_EMULATION);
+    }
 }

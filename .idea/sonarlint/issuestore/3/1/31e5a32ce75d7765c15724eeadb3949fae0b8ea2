@@ -1,0 +1,22 @@
+
+Tsquid:UselessParenthesesCheck"!Remove these useless parentheses.(†ÀÏùÿÿÿÿ8áê€øı,
+]squid:S1126"AReplace this if-then-else statement by a single return statement.(àÿœ×8áê€øı,
+‚squid:S1488"aImmediately return this expression instead of assigning it to the temporary variable "textWidth".(¼Íøúÿÿÿÿ8áê€øı,
+psquid:S1215"TDon't try to be smarter than the JVM, remove this call to run the garbage collector.(Ì°¬“8áê€øı,
+nsquid:S2095"MUse try-with-resources or close this "FileInputStream" in a "finally" clause.(úäĞÆıÿÿÿÿ8áê€øı,
+b
+squid:S899"BDo something with the "boolean" value returned by "createNewFile".(Ğ’Íùÿÿÿÿ8áê€øı,
+Ÿ%squid:RedundantThrowsDeclarationCheck"iRemove the declaration of thrown exception 'java.lang.NullPointerException' which is a runtime exception.(ÿå½»8áê€øı,
+9squid:S2119"Save and re-use this "Random".(¼İÅf8áê€øı,
+psquid:S1215"TDon't try to be smarter than the JVM, remove this call to run the garbage collector.(Ì°¬“8áê€øı,
+bsquid:S1126"AReplace this if-then-else statement by a single return statement.(¹õÛâıÿÿÿÿ8áê€øı,
+]squid:S1126"AReplace this if-then-else statement by a single return statement.(¸…½Å8áê€øı,
+¤%squid:RedundantThrowsDeclarationCheck"iRemove the declaration of thrown exception 'java.lang.NullPointerException' which is a runtime exception.(Š¡óÓıÿÿÿÿ8áê€øı,
+bsquid:S1126"AReplace this if-then-else statement by a single return statement.(â×—˜ÿÿÿÿÿ8áê€øı,
+Esquid:S1125")Remove the literal "false" boolean value.(ÇóÚ½8áê€øı,
+psquid:S1215"TDon't try to be smarter than the JVM, remove this call to run the garbage collector.(Ì°¬“8áê€øı,
+]squid:S1126"AReplace this if-then-else statement by a single return statement.(Ò¤§8áê€øı,
+wsquid:S1488"[Immediately return this expression instead of assigning it to the temporary variable "str".(‰™Âñ8áê€øı,
+[
+squid:S899";Do something with the "boolean" value returned by "delete".(²Œ­ûÿÿÿÿ8áê€øı,
+‰ squid:ForLoopCounterChangedCheck"XRefactor the code in order to not assign to this loop counter from within the loop body.(İáºı8áê€øı,

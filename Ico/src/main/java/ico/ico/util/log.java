@@ -44,7 +44,7 @@ public class log {
         if (LEVEL < 5 || TextUtils.isEmpty(msg)) {
             return;
         }
-        String tag = COMMON_TAG + "v_" + concat("_", tags);
+        String tag = COMMON_TAG + "v_" + join("_", tags);
         if (msg.length() <= MAX_SIZE) {
             Log.v(tag, msg + "");
             return;
@@ -59,7 +59,7 @@ public class log {
         if (LEVEL < 4 || TextUtils.isEmpty(msg)) {
             return;
         }
-        String tag = COMMON_TAG + "d_" + concat("_", tags);
+        String tag = COMMON_TAG + "d_" + join("_", tags);
         if (msg.length() <= MAX_SIZE) {
             Log.d(tag, msg + "");
             return;
@@ -74,7 +74,7 @@ public class log {
         if (LEVEL < 3 || TextUtils.isEmpty(msg)) {
             return;
         }
-        String tag = COMMON_TAG + "i_" + concat("_", tags);
+        String tag = COMMON_TAG + "i_" + join("_", tags);
         if (msg.length() <= MAX_SIZE) {
             Log.i(tag, msg + "");
             return;
@@ -89,7 +89,7 @@ public class log {
         if (LEVEL < 2 || TextUtils.isEmpty(msg)) {
             return;
         }
-        String tag = COMMON_TAG + "w_" + concat("_", tags);
+        String tag = COMMON_TAG + "w_" + join("_", tags);
         if (msg.length() <= MAX_SIZE) {
             Log.w(tag, msg + "");
             return;
@@ -104,7 +104,7 @@ public class log {
         if (LEVEL < 1 || TextUtils.isEmpty(msg)) {
             return;
         }
-        String tag = COMMON_TAG + "e_" + concat("_", tags);
+        String tag = COMMON_TAG + "e_" + join("_", tags);
         if (msg.length() <= MAX_SIZE) {
             Log.e(tag, msg + "");
             return;
@@ -122,7 +122,7 @@ public class log {
         if ("".equals(msg) && e == null) {
             return;
         }
-        String tag = COMMON_TAG + "e_" + concat("_", tags);
+        String tag = COMMON_TAG + "e_" + join("_", tags);
         List<String> data = split(msg, MAX_SIZE);
         for (int i = 0; i < data.size(); i++) {
             Log.e(tag, data.get(i), e);
@@ -133,7 +133,7 @@ public class log {
         if (LEVEL < 3 || TextUtils.isEmpty(msg)) {
             return;
         }
-        String tag = COMMON_TAG + concat("_", tags);
+        String tag = COMMON_TAG + join("_", tags);
         System.out.println(tag + "," + msg);
     }
 
@@ -141,7 +141,7 @@ public class log {
         if (LEVEL < 1 || TextUtils.isEmpty(msg)) {
             return;
         }
-        String tag = COMMON_TAG + concat("_", tags);
+        String tag = COMMON_TAG + join("_", tags);
         System.err.println(tag + "," + msg);
     }
 
@@ -149,8 +149,8 @@ public class log {
         if (LEVEL < 5 || msgs == null || msgs.length == 0) {
             return;
         }
-        String tag = COMMON_TAG + "v_" + concat("_", tags);
-        String msg = concat("_", msgs);
+        String tag = COMMON_TAG + "v_" + join("_", tags);
+        String msg = join("_", msgs);
         List<String> data = split(msg, MAX_SIZE);
         for (int i = 0; i < data.size(); i++) {
             Log.v(tag, data.get(i));
@@ -161,8 +161,8 @@ public class log {
         if (LEVEL < 4 || msgs == null || msgs.length == 0) {
             return;
         }
-        String tag = COMMON_TAG + "d_" + concat("_", tags);
-        String msg = concat("_", msgs);
+        String tag = COMMON_TAG + "d_" + join("_", tags);
+        String msg = join("_", msgs);
         List<String> data = split(msg, MAX_SIZE);
         for (int i = 0; i < data.size(); i++) {
             Log.d(tag, data.get(i));
@@ -173,8 +173,8 @@ public class log {
         if (LEVEL < 3 || msgs == null || msgs.length == 0) {
             return;
         }
-        String tag = COMMON_TAG + "i_" + concat("_", tags);
-        String msg = concat("_", msgs);
+        String tag = COMMON_TAG + "i_" + join("_", tags);
+        String msg = join("_", msgs);
         List<String> data = split(msg, MAX_SIZE);
         for (int i = 0; i < data.size(); i++) {
             Log.i(tag, data.get(i));
@@ -185,8 +185,8 @@ public class log {
         if (LEVEL < 2 || msgs == null || msgs.length == 0) {
             return;
         }
-        String tag = COMMON_TAG + "w_" + concat("_", tags);
-        String msg = concat("_", msgs);
+        String tag = COMMON_TAG + "w_" + join("_", tags);
+        String msg = join("_", msgs);
         List<String> data = split(msg, MAX_SIZE);
         for (int i = 0; i < data.size(); i++) {
             Log.w(tag, data.get(i));
@@ -197,8 +197,8 @@ public class log {
         if (LEVEL < 1 || msgs == null || msgs.length == 0) {
             return;
         }
-        String tag = COMMON_TAG + "e_" + concat("_", tags);
-        String msg = concat("_", msgs);
+        String tag = COMMON_TAG + "e_" + join("_", tags);
+        String msg = join("_", msgs);
         List<String> data = split(msg, MAX_SIZE);
         for (int i = 0; i < data.size(); i++) {
             Log.e(tag, data.get(i));
@@ -212,8 +212,8 @@ public class log {
         if ((msgs == null || msgs.length == 0) && e == null) {
             return;
         }
-        String tag = COMMON_TAG + "e_" + concat("_", tags);
-        String msg = concat("_", msgs);
+        String tag = COMMON_TAG + "e_" + join("_", tags);
+        String msg = join("_", msgs);
         List<String> data = split(msg, MAX_SIZE);
         for (int i = 0; i < data.size(); i++) {
             Log.e(tag, data.get(i));
@@ -224,8 +224,8 @@ public class log {
         if (LEVEL < 3 || msgs == null || msgs.length == 0) {
             return;
         }
-        String tag = COMMON_TAG + concat("_", tags);
-        String msg = concat("_", msgs);
+        String tag = COMMON_TAG + join("_", tags);
+        String msg = join("_", msgs);
         System.out.println(tag + "," + msg);
     }
 
@@ -233,8 +233,8 @@ public class log {
         if (LEVEL < 1 || msgs == null || msgs.length == 0) {
             return;
         }
-        String tag = COMMON_TAG + concat("_", tags);
-        String msg = concat("_", msgs);
+        String tag = COMMON_TAG + join("_", tags);
+        String msg = join("_", msgs);
         System.err.println(tag + "," + msg);
     }
 
@@ -243,7 +243,7 @@ public class log {
         if (LEVEL < 1 || TextUtils.isEmpty(msg)) {
             return;
         }
-        String tag = COMMON_TAG + concat("_", tags);
+        String tag = COMMON_TAG + join("_", tags);
         Log.e(tag, msg);
         //获取当前时间并格式化，不适用DateUtil是为了降低耦合性
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
@@ -266,7 +266,7 @@ public class log {
         if (LEVEL < 1 || TextUtils.isEmpty(msg)) {
             return;
         }
-        String tag = COMMON_TAG + concat("_", tags);
+        String tag = COMMON_TAG + join("_", tags);
         Log.e(tag, msg);
         //获取当前时间并格式化，不适用DateUtil是为了降低耦合性
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
@@ -385,7 +385,7 @@ public class log {
      * @param texts 要被拼接的字符串数组,如果传入null或者空数组，则将返回空字符串
      * @return
      */
-    public static String concat(String str, String... texts) {
+    public static String join(String str, String... texts) {
         if (texts == null || texts.length == 0) return "";
         if (texts.length == 1) return texts[0];
         StringBuilder sb = new StringBuilder();

@@ -19,6 +19,8 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -87,19 +89,27 @@ public class HttpUtil {
     public static Subscription execute(final Context context, final IHttpCallback iHttpCallback, final Call<byte[]> call, final IDispather dispather) {
         return Observable.just("")
                 .observeOn(Schedulers.io())
-                .map(s -> {
-                    /*同步请求，获取Response*/
-                    Response<byte[]> res = null;
-                    Exception exception = null;
-                    try {
-                        res = call.execute();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        exception = e;
+                .map(new Func1<String, HttpResult>() {
+                    @Override
+                    public HttpResult call(String s) {
+                        /*同步请求，获取Response*/
+                        Response<byte[]> res = null;
+                        Exception exception = null;
+                        try {
+                            res = call.execute();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            exception = e;
+                        }
+                        return new HttpResult(res, exception);
                     }
-                    return new HttpResult(res, exception);
                 })
-                .doOnUnsubscribe(() -> log.w("======doOnUnsubscribe"))
+                .doOnUnsubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        log.w("======doOnUnsubscribe");
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<HttpResult>() {
                     @Override

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">NBankStudy</string>
+    <string name="asd">…</string>
+    <string name="asd1">...</string>
+    <string name="asd2">&#8230;</string>
+    <string name="asd3">为了您的使用安全，密码需要6&#8211;18位数字字母组合，不允许纯数字或纯字母，不允许简单密码。</string>
+    <string name="asd4">为了您的使用安全，密码需要6&#8212;18位数字字母组合，不允许纯数字或纯字母，不允许简单密码。</string>
 </resources>

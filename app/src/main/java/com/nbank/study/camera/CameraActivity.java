@@ -23,6 +23,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
+import com.nbank.study.ParcelTest;
 import com.nbank.study.R;
 
 import java.io.File;
@@ -38,13 +39,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
-import ico.ico.ico.BaseFragActivity;
-import ico.ico.util.Common;
 import ico.ico.helper.WindowHelper;
+import ico.ico.ico.BaseFragActivity;
+import ico.ico.util.FileUtil;
 import ico.ico.util.log;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class CameraActivity extends BaseFragActivity implements EasyPermissions.PermissionCallbacks, SurfaceHolder.Callback, Camera.PreviewCallback {
+    private static final String TAG = CameraActivity.class.getSimpleName();
     @BindView(R.id.preview)
     SurfaceView preview;
     SurfaceHolder holder;
@@ -453,7 +455,10 @@ public class CameraActivity extends BaseFragActivity implements EasyPermissions.
         File file = new File(Environment.getExternalStorageDirectory() + "/test/ddd" + System.currentTimeMillis() + ".jpg");
         try {
             //确保文件存在，如果不存在就修改文件名然后创建，然后返回对应的文件对象
-            File _file = Common.ensureFileACreate(file);
+            File _file = FileUtil.createFileOrRename(file, TAG);
+            if (_file == null) {
+                return;
+            }
             yuvImage.compressToJpeg(rect, 100, new FileOutputStream(_file));
             log.w("==" + _file.getAbsolutePath());
         } catch (IOException e) {

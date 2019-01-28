@@ -1,0 +1,15 @@
+
+V
+squid:S899";Do something with the "boolean" value returned by "delete".(È×ö8áê€øı,
+bsquid:S1075"ARefactor your code to get this URI from a customizable parameter.(àª¿²øÿÿÿÿ8áê€øı,
+asquid:S2134"@Don't extend "Thread", since the "run" method is not overridden.(æ¹¶Şüÿÿÿÿ8áê€øı,
+Bsquid:S1075"&Remove this hard-coded path-delimiter.(¯’çú8áê€øı,
+lsquid:S1764"KCorrect one of the identical sub-expressions on both sides of operator "=="(œ˜³Ïşÿÿÿÿ8áê€øı,
+dsquid:S2445"H"obj" is a method parameter, and should not be used for synchronization.(–ÓÍÿ8áê€øı,
+Zsquid:S3400"9Remove this method and declare a constant for this value.(‘Ñ­ÿùÿÿÿÿ8áê€øı,
+Csquid:S2189""Add an end condition to this loop.(˜ïˆÿÿÿÿÿ8áê€øı,
+Ssquid:S2589"7Remove this expression which always evaluates to "true"(ƒçÈÁ8áê€øı,
+\squid:S2134"@Don't extend "Thread", since the "run" method is not overridden.(Òáö¯8áê€øı,
+­%squid:RedundantThrowsDeclarationCheck"wRemove the declaration of thrown exception 'java.lang.InterruptedException', as it cannot be thrown from method's body.(‘–µ¥8áê€øı,
+lsquid:S1764"KCorrect one of the identical sub-expressions on both sides of operator "=="(œ˜³Ïşÿÿÿÿ8áê€øı,
+Gsquid:S1075"&Remove this hard-coded path-delimiter.(šï”„øÿÿÿÿ8áê€øı,

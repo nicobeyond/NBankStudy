@@ -16,12 +16,13 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import ico.ico.util.Common;
+import ico.ico.util.FileUtil;
 import ico.ico.util.log;
 
 /**
  * Tbs服务帮助工具
  * <p>
- * Tbs接入相关笔记：﻿http://2d7eb962.wiz03.com/share/s/0JvHBy3NOASk2pFO7C39hO7i0OayWP0pqkyE2HYJrx0yF4v2
+ * Tbs接入相关笔记：http://2d7eb962.wiz03.com/share/s/0JvHBy3NOASk2pFO7C39hO7i0OayWP0pqkyE2HYJrx0yF4v2
  */
 public class TbsHelper {
     final static String TAG = TbsHelper.class.getName();
@@ -210,8 +211,8 @@ public class TbsHelper {
             }
         }
         //检查文件是否受到支持, 不支持直接抛出异常
-        String suffix = Common.getSuffix(filePath);
-        boolean flag = mTbsReaderView.preOpen(Common.getSuffix(filePath), false);
+        String suffix = FileUtil.getSuffix(filePath);
+        boolean flag = mTbsReaderView.preOpen(FileUtil.getSuffix(filePath), false);
         if (!flag) {
             throw new IllegalAccessException(suffix + "文件格式不支持");
         }

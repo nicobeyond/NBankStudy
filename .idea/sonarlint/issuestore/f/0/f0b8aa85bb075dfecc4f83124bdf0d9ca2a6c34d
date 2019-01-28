@@ -1,0 +1,31 @@
+
+Zsquid:S1155">Use isEmpty() to check whether the collection is empty or not.(Åœœâ8¤‰²©ü,
+Gsquid:S1168"+Return an empty collection instead of null.(¥¹ï8¤‰²©ü,
+fsquid:S3027"JPut single-quotes around '.' to use the faster "lastIndexOf(char)" method.(«íÅ8¤‰²©ü,
+Ksquid:S2093"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ8¤‰²©ü,
+bsquid:S1126"AReplace this if-then-else statement by a single return statement.(Áôš—ûÿÿÿÿ8¤‰²©ü,
+fsquid:S3027"JPut single-quotes around '.' to use the faster "lastIndexOf(char)" method.(½Ô“â8¤‰²©ü,
+nsquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 20 to the 15 allowed.(ÿºìŠ8¤‰²©ü,
+jsquid:S4042"IUse "java.nio.Files#delete" here for better messages on error conditions.(‘œ›âüÿÿÿÿ8¤‰²©ü,
+Gsquid:S1168"+Return an empty collection instead of null.(¥¹ï8¤‰²©ü,
+ksquid:S3027"JPut single-quotes around '.' to use the faster "lastIndexOf(char)" method.(®ˆ˜şøÿÿÿÿ8¤‰²©ü,
+ssquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ãâ¿¦úÿÿÿÿ8Ö‡º©ü,
+Bsquid:S1168"&Return an empty array instead of null.(¥¹ï8¤‰²©ü,
+jsquid:S4042"IUse "java.nio.Files#delete" here for better messages on error conditions.(ºèêŒüÿÿÿÿ8¤‰²©ü,
+ssquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ôø«Ùùÿÿÿÿ8¤ë¹©ü,
+Bsquid:S1168"&Return an empty array instead of null.(¥¹ï8¤‰²©ü,
+Bsquid:S1168"&Return an empty array instead of null.(¥¹ï8¤‰²©ü,
+ksquid:S3027"JPut single-quotes around '.' to use the faster "lastIndexOf(char)" method.(®ˆ˜şøÿÿÿÿ8¤‰²©ü,
+gsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(†€éˆ8¤‰²©ü,
+Ksquid:S2093"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ8¤‰²©ü,
+zsquid:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(èì½Øÿÿÿÿÿ8¤‰²©ü,
+Ksquid:S2093"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ8¤‰²©ü,
+zsquid:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(èì½Øÿÿÿÿÿ8¤‰²©ü,
+fsquid:S2259"J"NullPointerException" will be thrown when invoking method "createFile()".(ÿ‡È‡8§­È©ü,
+Ksquid:S1066"/Merge this if statement with the enclosing one.(ßõê‡8¤‰²©ü,
+nsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û¤Ãğ8¤‰²©ü,
+Psquid:S1066"/Merge this if statement with the enclosing one.(…Ã– úÿÿÿÿ8¤‰²©ü,
+Ksquid:S2093"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ8¤‰²©ü,
+Dsquid:S1604"(Make this anonymous inner class a lambda(û„Ã×8¤‰²©ü,
+esquid:S4042"IUse "java.nio.Files#delete" here for better messages on error conditions.(±šù¿8¤‰²©ü,
+Ksquid:S1172"*Remove this unused method parameter "tag".(ïŸğÓıÿÿÿÿ8•¤Ê©ü,

@@ -95,7 +95,7 @@ public class ExampleUnitTest {
             }
         };
         thread1.start();
-//        thread2.start();
+        thread2.start();
     }
 
     public class IThread extends Thread {

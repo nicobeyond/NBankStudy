@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ico.ico.util.Common;
+import ico.ico.util.StringUtil;
 import ico.ico.widget.SimpleTextWatcher;
 
 public class TestActivity extends AppCompatActivity {
@@ -33,7 +34,7 @@ public class TestActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 super.afterTextChanged(s);
                 try {
-                    String str1 = Common.encodeByMd5(s.toString());
+                    String str1 = StringUtil.encodeByMd5(s.toString());
                     tvMd5.setText(str1);
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();

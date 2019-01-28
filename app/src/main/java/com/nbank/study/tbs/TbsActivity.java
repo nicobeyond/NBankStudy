@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.nbank.study.ParcelTest;
 import com.nbank.study.R;
 import com.tencent.smtt.sdk.QbSdk;
 import com.tencent.smtt.sdk.TbsListener;
@@ -47,6 +48,11 @@ public class TbsActivity extends BaseFragActivity implements TbsHelper.TbsListen
             return;
         }
         initQbSdk();
+
+
+
+        ParcelTest parcelTest = getIntent().getParcelableExtra("a");
+        log.w("===" + parcelTest.toString());
     }
 
 
@@ -71,7 +77,7 @@ public class TbsActivity extends BaseFragActivity implements TbsHelper.TbsListen
             return;
         }
 
-        String filePath = obtainFilePath();
+        final String filePath = obtainFilePath();
         if (TextUtils.isEmpty(filePath)) {
             mActivity.showToast("文件不存在");
             return;
@@ -95,7 +101,7 @@ public class TbsActivity extends BaseFragActivity implements TbsHelper.TbsListen
     /** 应用内打开本地文件 */
     @OnClick(R.id.btn_pdf_inner)
     public void onClickPDFInner() {
-        String filePath = obtainFilePath();
+        final String filePath = obtainFilePath();
         if (TextUtils.isEmpty(filePath)) {
             mActivity.showToast("文件不存在");
             return;
