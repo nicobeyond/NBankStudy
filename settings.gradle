@@ -1,5 +1,3 @@
 include ':app'
 include ':Ico'
 include ':IcoCamera'
-include ':example'
-include ':library'

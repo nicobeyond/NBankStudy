@@ -28,6 +28,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaScannerConnection;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -421,6 +422,7 @@ public class Common {
         }
         return macAddress;
     }
+
 
     public interface LocalMacCallback {
         void onLocalMac(String result);
@@ -2020,4 +2022,18 @@ public class Common {
     public static boolean hasNfcHce(Context context) {
         return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_NFC_HOST_CARD_EMULATION);
     }
+
+    /** 写文件后需要通知系统重新扫描 */
+    public static void refreshMediaSync(Context context, String absolutePath) {
+        MediaScannerConnection.scanFile(context, new String[]{absolutePath}, null, null);
+    }
+
+    /** 写文件后需要通知系统重新扫描 */
+    public static void refreshMediaSync(Context context, File file) {
+        Uri uri = Uri.fromFile(file);
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
+        context.sendBroadcast(intent);
+    }
+
+
 }

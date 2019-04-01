@@ -11,8 +11,6 @@
             <option value="$PROJECT_DIR$/Ico" />
             <option value="$PROJECT_DIR$/IcoCamera" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/example" />
-            <option value="$PROJECT_DIR$/library" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

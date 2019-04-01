@@ -28,34 +28,33 @@ public class FileUtil {
     //region 创建文件或文件夹
 
     /**
-     * {@link #createDir(File, String)}
+     * {@link #createDir(File)}
      */
-    public static boolean createDir(String path, String tag) {
-        return FileUtil.createDir(new File(path), tag);
+    public static boolean createDir(String path) {
+        return FileUtil.createDir(new File(path));
     }
 
     /**
      * 创建文件夹
      *
      * @param file 文件对象
-     * @param tag  执行删除操作返回false时，用于日志输出的tag
      * @return boolean 如果为true，代表已存在或者创建成功，如果为false，代表路径不是一个文件夹，或者调用api返回false
      */
-    public static boolean createDir(File file, String tag) {
+    public static boolean createDir(File file) {
         if (file.exists()) {
             //存在
             if (file.isDirectory()) {
                 return true;
             } else {
-                if (!FileUtil.deleteFile(file, tag)) {
-                    log.e("file存在,是个文件，删除失败，" + file.getAbsolutePath(), tag);
+                if (!FileUtil.deleteFile(file)) {
+                    log.e("file存在,是个文件，删除失败，" + file.getAbsolutePath(), TAG);
                     return false;
                 }
             }
         }
         //不存在
         if (!file.mkdirs()) {
-            log.e("文件夹创建失败," + file.getAbsolutePath(), tag);
+            log.e("文件夹创建失败," + file.getAbsolutePath(), TAG);
             return false;
         }
         return true;
@@ -67,8 +66,8 @@ public class FileUtil {
      * @param filePath 文件绝对路径
      * @return int 0失败，1已存在，2新创建成功
      */
-    public static int createFile(String filePath, String tag) {
-        return FileUtil.createFile(new File(filePath), tag);
+    public static int createFile(String filePath) {
+        return FileUtil.createFile(new File(filePath));
     }
 
     /**
@@ -77,7 +76,7 @@ public class FileUtil {
      * @param file 文件对象
      * @return int 0失败，1已存在，2新创建成功
      */
-    public static int createFile(File file, String tag) {
+    public static int createFile(File file) {
         //不是文件
         if (!FileUtil.isFile(file.getAbsolutePath())) {
             return 0;
@@ -86,8 +85,8 @@ public class FileUtil {
             if (file.isFile()) {//文件
                 return 1;
             } else {//文件夹
-                if (!FileUtil.deleteDir(file, tag)) {
-                    log.e("file存在，不是文件，" + file.getAbsolutePath(), tag);
+                if (!FileUtil.deleteDir(file)) {
+                    log.e("file存在，不是文件，" + file.getAbsolutePath(), TAG);
                     return 0;
                 }
             }
@@ -95,7 +94,7 @@ public class FileUtil {
 
         //父文件夹
         if (!file.getParentFile().exists()) {
-            if (!FileUtil.createDir(file.getParentFile(), tag)) {
+            if (!FileUtil.createDir(file.getParentFile())) {
                 return 0;
             }
         }
@@ -103,12 +102,12 @@ public class FileUtil {
             if (file.createNewFile()) {
                 return 2;
             } else {
-                log.e("文件创建失败，" + file.getAbsolutePath(), tag);
+                log.e("文件创建失败，" + file.getAbsolutePath(), TAG);
                 return 0;
             }
         } catch (Exception e) {
 //            e.printStackTrace();
-            log.ew("文件创建异常，" + file.getAbsolutePath(), e, tag);
+            log.ew("文件创建异常，" + file.getAbsolutePath(), e, TAG);
             return 0;
         }
     }
@@ -119,13 +118,13 @@ public class FileUtil {
      * @param file 文件对象
      * @return int 0失败，1已存在，2新创建成功
      */
-    public static File createFileOrRename(File file, String tag) {
+    public static File createFileOrRename(File file) {
         //不是文件
         if (!FileUtil.isFile(file.getAbsolutePath())) {
             return null;
         }
         //检查文件夹
-        if (!file.getParentFile().exists() && !FileUtil.createDir(file.getParentFile(), TAG)) {
+        if (!file.getParentFile().exists() && !FileUtil.createDir(file.getParentFile())) {
             return null;
         }
         File finalFile = null;
@@ -151,7 +150,7 @@ public class FileUtil {
         } else {
             finalFile = file;
         }
-        if (createFile(finalFile, TAG) == 0) {
+        if (createFile(finalFile) == 0) {
             return null;
         } else {
             return finalFile;
@@ -161,54 +160,52 @@ public class FileUtil {
 
     //region 删除文件或文件夹
 
-    /** {@link #delete(File, String)} */
-    public static boolean delete(String filePath, String tag) {
-        return FileUtil.delete(new File(filePath), tag);
+    /** {@link #delete(File)} */
+    public static boolean delete(String filePath) {
+        return FileUtil.delete(new File(filePath));
     }
 
     /**
      * 删除指定路径文件
      *
      * @param file 文件对象
-     * @param tag  执行删除操作返回false时，用于日志输出的tag
      */
-    public static boolean delete(File file, String tag) {
+    public static boolean delete(File file) {
         if (file.exists() && !file.delete()) {
-            log.e("删除一个文件或文件夹失败," + file.getAbsolutePath(), tag);
+            log.e("删除一个文件或文件夹失败," + file.getAbsolutePath(), TAG);
             return false;
         }
         return true;
     }
 
-    /** {@link #deleteFile(File, String)} */
-    public static boolean deleteFile(String filePath, String tag) {
-        return FileUtil.deleteFile(new File(filePath), tag);
+    /** {@link #deleteFile(File)} */
+    public static boolean deleteFile(String filePath) {
+        return FileUtil.deleteFile(new File(filePath));
     }
 
     /**
      * 删除指定路径文件
      *
      * @param file 文件对象
-     * @param tag  执行删除操作返回false时，用于日志输出的tag
      */
-    public static boolean deleteFile(File file, String tag) {
+    public static boolean deleteFile(File file) {
         if (!file.exists()) {
             return true;
         }
         if (!file.isFile()) {
-            log.e("file存在，不是文件，" + file.getAbsolutePath(), tag);
+            log.e("file存在，不是文件，" + file.getAbsolutePath(), TAG);
             return false;
         }
         if (!file.delete()) {
-            log.e("文件无法删除," + file.getAbsolutePath(), tag);
+            log.e("文件无法删除," + file.getAbsolutePath(), TAG);
             return false;
         }
         return true;
     }
 
-    /** {@link FileUtil#deleteFiles(File, boolean, String)} */
-    public static boolean deleteFiles(String dirPath, boolean recursion, String tag) {
-        return deleteFiles(new File(dirPath), recursion, tag);
+    /** {@link FileUtil#deleteFiles(File, boolean)} */
+    public static boolean deleteFiles(String dirPath, boolean recursion) {
+        return deleteFiles(new File(dirPath), recursion);
     }
 
     /**
@@ -217,12 +214,12 @@ public class FileUtil {
      * @param file      目录对象
      * @param recursion 是否递归
      */
-    public static boolean deleteFiles(File file, boolean recursion, String tag) {
+    public static boolean deleteFiles(File file, boolean recursion) {
         if (!file.exists()) {
             return true;
         }
         if (!file.isDirectory()) {
-            log.e("file存在，不是文件夹，" + file.getAbsolutePath(), tag);
+            log.e("file存在，不是文件夹，" + file.getAbsolutePath(), TAG);
             return true;
         }
         //获取子文件
@@ -238,14 +235,14 @@ public class FileUtil {
             }
             if (files[i].isFile()) {//文件
                 if (!files[i].delete()) {
-                    log.e("删除指定目录下的所有文件时，个别文件删除失败，" + file.getAbsolutePath(), tag);
+                    log.e("删除指定目录下的所有文件时，个别文件删除失败，" + file.getAbsolutePath(), TAG);
                     return false;
                 }
             } else {//文件夹
                 //递归
                 if (recursion) {
                     // 文件为目录的情况，需要进行递归删除
-                    if (!deleteDir(files[i], tag)) {
+                    if (!deleteDir(files[i])) {
                         return false;
                     }
                 }
@@ -254,9 +251,9 @@ public class FileUtil {
         return true;
     }
 
-    /** {@link FileUtil#deleteDir(File, String)} */
-    public static boolean deleteDir(String dirPath, String tag) {
-        return FileUtil.deleteDir(new File(dirPath), tag);
+    /** {@link FileUtil#deleteDir(File)} */
+    public static boolean deleteDir(String dirPath) {
+        return FileUtil.deleteDir(new File(dirPath));
     }
 
     /**
@@ -265,16 +262,16 @@ public class FileUtil {
      * @param file 文件夹路径
      * @return
      */
-    public static boolean deleteDir(File file, String tag) {
+    public static boolean deleteDir(File file) {
         if (!file.exists() || !file.isDirectory()) {
             return true;
         }
         //删除文件夹内的所有文件和子文件夹
-        if (!FileUtil.deleteFiles(file, true, tag)) {
+        if (!FileUtil.deleteFiles(file, true)) {
             return false;
         }
         //删除目录
-        return FileUtil.delete(file, TAG);
+        return FileUtil.delete(file);
     }
     //endregion
 
@@ -348,7 +345,7 @@ public class FileUtil {
      * @throws IOException
      */
     public File creatSDFile(String fileName) {
-        if (FileUtil.createFile(SDCARD + fileName, TAG) != 0) {
+        if (FileUtil.createFile(SDCARD + fileName) != 0) {
             return new File(SDCARD + fileName);
         }
         return null;
@@ -361,7 +358,7 @@ public class FileUtil {
      */
     public File creatSDDir(String dirName) {
         File dir = new File(SDCARD + dirName);
-        if (!FileUtil.createDir(dir, TAG)) {
+        if (!FileUtil.createDir(dir)) {
             return null;
         }
         return dir;
@@ -414,13 +411,13 @@ public class FileUtil {
     //endregion
 
     //region 设置文件信息
-    public static boolean setLastModified(String filePath, long time, String tag) {
-        return FileUtil.setLastModified(new File(filePath), time, tag);
+    public static boolean setLastModified(String filePath, long time) {
+        return FileUtil.setLastModified(new File(filePath), time);
     }
 
-    public static boolean setLastModified(File file, long time, String tag) {
+    public static boolean setLastModified(File file, long time) {
         if (!file.setLastModified(time)) {
-            log.e(String.format("设置文件修改时间失败，filePath：%s", file.getAbsolutePath()), tag);
+            log.e(String.format("设置文件修改时间失败，filePath：%s", file.getAbsolutePath()), TAG);
             return false;
         }
         return true;
@@ -434,11 +431,10 @@ public class FileUtil {
      *
      * @param oldPath 旧文件的绝对路径
      * @param newPath 新文件的绝对路径
-     * @param tag     用于日志的tag
      * @return
      */
-    public static boolean renameTo(String oldPath, String newPath, String tag) {
-        return FileUtil.renameTo(new File(oldPath), new File(newPath), tag);
+    public static boolean renameTo(String oldPath, String newPath) {
+        return FileUtil.renameTo(new File(oldPath), new File(newPath));
     }
 
     /**
@@ -446,17 +442,16 @@ public class FileUtil {
      *
      * @param oldFile 旧文件
      * @param newFile 新文件
-     * @param tag     用于日志的tag
      * @return
      */
-    public static boolean renameTo(File oldFile, File newFile, String tag) {
+    public static boolean renameTo(File oldFile, File newFile) {
         if (!oldFile.exists()) {
-            log.e(String.format("文件重命名失败，旧文件不存在，旧文件：%s，新文件：%s", oldFile.getAbsolutePath(), newFile.getAbsolutePath()), tag);
+            log.e(String.format("文件重命名失败，旧文件不存在，旧文件：%s，新文件：%s", oldFile.getAbsolutePath(), newFile.getAbsolutePath()), TAG);
             return false;
         }
         boolean renameFlg = oldFile.renameTo(newFile);
         if (!renameFlg) {
-            log.e(String.format("文件重命名失败，旧文件：%s，新文件：%s", oldFile.getAbsolutePath(), newFile.getAbsolutePath()), tag);
+            log.e(String.format("文件重命名失败，旧文件：%s，新文件：%s", oldFile.getAbsolutePath(), newFile.getAbsolutePath()), TAG);
         }
         return renameFlg;
     }
@@ -591,17 +586,17 @@ public class FileUtil {
     //region 拷贝和移动
 
     /** 拷贝文件 */
-    public static boolean copyFile(File file, File newFile, String tag) {
+    public static boolean copyFile(File file, File newFile) {
         //旧文件不存在，或者不是文件
         if (!file.exists() || !file.isFile()) {
             return false;
         }
         //创建新文件所在文件夹
-        if (!FileUtil.createDir(newFile.getParentFile(), tag)) {
+        if (!FileUtil.createDir(newFile.getParentFile())) {
             return false;
         }
         //创建新文件
-        if (FileUtil.createFile(newFile, tag) == 0) {
+        if (FileUtil.createFile(newFile) == 0) {
             return false;
         }
 
@@ -622,7 +617,7 @@ public class FileUtil {
             fos.flush();
             return true;
         } catch (IOException e) {
-            log.ew(e.toString(), tag);
+            log.ew(e.toString(), TAG);
         } finally {
             SafeCloseUtil.close(fos);
             SafeCloseUtil.close(fis);
@@ -631,11 +626,11 @@ public class FileUtil {
     }
 
     /** 移动文件 */
-    public static boolean moveFile(File file, File newFile, String tag) {
-        if (!copyFile(file, newFile, tag)) {
+    public static boolean moveFile(File file, File newFile) {
+        if (!copyFile(file, newFile)) {
             return false;
         }
-        if (!deleteFile(file, tag)) {
+        if (!deleteFile(file)) {
             return false;
         }
         return true;
@@ -684,8 +679,8 @@ public class FileUtil {
     //region 读写操作
 
     /** 向指定文件中写入字节数组 */
-    public static boolean writeFile(File file, byte[] buffer, boolean append, String tag) {
-        if (createFile(file, tag) == 0) {
+    public static boolean writeFile(File file, byte[] buffer, boolean append) {
+        if (createFile(file) == 0) {
             return false;
         }
         BufferedOutputStream bos = null;
@@ -697,7 +692,7 @@ public class FileUtil {
             bos.flush();
             return true;
         } catch (Exception e) {
-            log.ew(e.toString(), tag);
+            log.ew(e.toString(), TAG);
         } finally {
             SafeCloseUtil.close(bos);
             SafeCloseUtil.close(fos);
@@ -707,15 +702,15 @@ public class FileUtil {
 
 
     /** 读取文件 */
-    public static byte[] readFile(File file, String tag) {
+    public static byte[] readFile(File file) {
         BufferedInputStream bis = null;
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(file);
             bis = new BufferedInputStream(fis);
-            return readInputStream(bis, tag);
+            return readInputStream(bis);
         } catch (Exception e) {
-            log.ew(e.toString(), tag);
+            log.ew(e.toString(), TAG);
         } finally {
             SafeCloseUtil.close(bis);
             SafeCloseUtil.close(fis);
@@ -724,7 +719,7 @@ public class FileUtil {
     }
 
     /** 读取流 */
-    public static byte[] readInputStream(BufferedInputStream bis, String tag) {
+    public static byte[] readInputStream(BufferedInputStream bis) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
             while (true) {
@@ -737,7 +732,7 @@ public class FileUtil {
             }
             return byteArrayOutputStream.toByteArray();
         } catch (IOException e) {
-            log.ew(e.toString(), tag);
+            log.ew(e.toString(), TAG);
         } finally {
             SafeCloseUtil.close(bis);
             SafeCloseUtil.close(byteArrayOutputStream);
@@ -753,7 +748,7 @@ public class FileUtil {
      * @return
      * @throws IOException
      */
-    public static byte[] readFileAssets(AssetManager assetManager, String filename, String tag) {
+    public static byte[] readFileAssets(AssetManager assetManager, String filename) {
         ByteArrayOutputStream baos = null;
         InputStream is = null;
         BufferedInputStream bis = null;
@@ -771,7 +766,7 @@ public class FileUtil {
             }
             return baos.toByteArray();
         } catch (Exception e) {
-            log.ew(e.toString(), tag);
+            log.ew(e.toString(), TAG);
         } finally {
             SafeCloseUtil.close(bis);
             SafeCloseUtil.close(is);

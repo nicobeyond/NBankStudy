@@ -148,18 +148,6 @@
                     android:layout_height="wrap_content"
                     android:text="Dialog" />
 
-                <Button
-                    android:id="@+id/btn_download"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="download" />
-
-                <Button
-                    android:id="@+id/btn_load"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="load" />
-
                 <LinearLayout
                     android:id="@+id/layout_wrap"
                     android:layout_width="match_parent"

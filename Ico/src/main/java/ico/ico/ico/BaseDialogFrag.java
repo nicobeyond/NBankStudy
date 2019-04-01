@@ -4,26 +4,29 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ico.ico.util.log;
-
 /**
- * Created by admin on 2015/3/11.-
+ * 基础的对话框碎片
+ * <p>
+ * 仿照Activity，增加了findViewById，setContentView，setDialogView
+ * <p>
+ * 另外通过onHiddenChanged监听来实现start-resume-pause-stop的生命周期
+ * <p>
+ * 另外增加OnDismissListener来监听对话框关闭
+ * <p>
+ * 增加saveStateFlag标记，当为true时，在视图被销毁时提前与父组件进行剥离，在下一次循环使用，实现复用
  */
 public abstract class BaseDialogFrag extends DialogFragment {
     public BaseFragActivity mActivity;
     public BaseDialogFrag mFragment;
     public View mContentView;
     public Dialog mDialog;
-    public Handler mHandler = new Handler();
-    OnDismissListener onDismissListener;
+    private OnDismissListener onDismissListener;
     private boolean saveStateFlag = true;
 
     @Override
@@ -90,7 +93,6 @@ public abstract class BaseDialogFrag extends DialogFragment {
      */
     @Override
     public void onHiddenChanged(boolean hidden) {
-        log.w("========onHiddenChanged");
         super.onHiddenChanged(hidden);
         if (!hidden) {
             onStart();
@@ -141,7 +143,7 @@ public abstract class BaseDialogFrag extends DialogFragment {
      * @param id
      * @return
      */
-    public View findViewById(int id) {
+    public <T extends View> T findViewById(int id) {
         if (mContentView != null) {
             return mContentView.findViewById(id);
         }
@@ -149,33 +151,6 @@ public abstract class BaseDialogFrag extends DialogFragment {
             return mDialog.findViewById(id);
         }
         return null;
-    }
-
-    /**
-     * 弹出土司
-     *
-     * @param stringResId
-     */
-    public void showToast(@StringRes int stringResId) {
-        mActivity.showToast(stringResId);
-    }
-
-    /**
-     * 弹出土司
-     *
-     * @param text
-     */
-    public void showToast(CharSequence text) {
-        mActivity.showToast(text);
-    }
-
-    /**
-     * 弹出土司
-     *
-     * @param text
-     */
-    public void showToasts(CharSequence text) {
-        mActivity.showToast(text);
     }
 
     public void setOnDismissListener(OnDismissListener onDismissListener) {

@@ -4,8 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -24,8 +22,6 @@ import com.nbank.study.logan.LoganActivity;
 import com.nbank.study.tbs.TbsActivity;
 import com.nbank.study.test.TestActivity;
 import com.nbank.study.web.WebViewActivity;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 import com.yitong.universalimageloader.core.ImageLoader;
 
 import java.io.File;
@@ -227,43 +223,8 @@ public class MainActivity extends BaseFragActivity implements EasyPermissions.Pe
 
     MyBottomDialogFrag myBottomDialogFrag;
 
-    String url = "https://oimageb5.ydstatic.com/image?id=5057719474449425631&product=adpublish&w=640&h=480&sc=0&rm=2&gsb=0&gsbd=60";
-
-    @OnClick(R.id.btn_download)
-    public void onClickDown(View v) {
-        Picasso.with(mActivity).load(url).into(new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                log.w("===onBitmapLoaded");
-            }
-
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-                log.w("===onBitmapFailed");
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-                log.w("===onPrepareLoad");
-            }
-        });
-    }
-
     @BindView(R.id.iv_test)
     ImageView ivTest;
-
-    @OnClick(R.id.btn_load)
-    public void onClickLoad(View v) {
-        Picasso.with(mActivity).load(url).into(ivTest);
-//        HttpResponseCache cache = HttpResponseCache.getInstalled();
-//        try {
-//            CacheResponse res = cache.get(URI.create(url), "GET", null);
-//            Bitmap bitmap = BitmapFactory.decodeStream(res.getBody());
-//            ivTest.setImageBitmap(bitmap);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-    }
 
     @OnClick(R.id.btn_mem)
     public void onClickMem(View v) {

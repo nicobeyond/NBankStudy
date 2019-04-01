@@ -1,16 +1,16 @@
 package ico.ico.ico;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.StringRes;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import ico.ico.helper.PromptHelper;
 
 /**
  * Created by admin on 2015/3/11.
@@ -18,8 +18,9 @@ import android.view.ViewGroup;
 public abstract class BaseFragment extends Fragment {
     public BaseFragActivity mActivity;
     public BaseFragment mFragment;
+    public PromptHelper mPromptHelper;
     public View mContentView;
-    public Handler mHandler = new Handler();
+    public Handler mHandler;
     private OnHideChangeListener onHideChangeListener;
     private boolean saveStateFlag = true;
 
@@ -28,6 +29,8 @@ public abstract class BaseFragment extends Fragment {
         super.onAttach(activity);
         mFragment = this;
         mActivity = (BaseFragActivity) activity;
+        mPromptHelper = mActivity.mPromptHelper;
+        mHandler = mActivity.mHandler;
     }
 
     @Override
@@ -105,93 +108,12 @@ public abstract class BaseFragment extends Fragment {
      * @param id
      * @return
      */
-    public View findViewById(int id) {
+    public <T extends View> T findViewById(int id) {
         return mContentView.findViewById(id);
     }
 
-    //region
-
-    /**
-     * 弹出土司
-     */
-    public void showToast(@StringRes final int stringResId) {
-        mActivity.showToast(stringResId);
-    }
-
-    /**
-     * 弹出土司
-     */
-    public void showToast(final CharSequence text) {
-        mActivity.showToast(text);
-    }
-
-    /**
-     * 弹出土司
-     */
-    public void showToasts(@StringRes final int stringResId) {
-        mActivity.showToasts(stringResId);
-    }
-
-    /**
-     * 弹出土司
-     */
-    public void showToasts(final CharSequence text) {
-        mActivity.showToasts(text);
-    }
-
-    /**
-     * 关闭当前对话框，显示输入参数所表示的对话框
-     *
-     * @param _dialog
-     */
-    public void showDialog(Dialog _dialog) {
-        mActivity.showDialog(_dialog);
-    }
-
-    /**
-     * 关闭对话框
-     */
-    public void dismissDialog() {
-        mActivity.dismissDialog();
-    }
-
-    /**
-     * 关闭当前对话框，显示输入参数所表示的对话框
-     *
-     * @param _dialog
-     */
-    public void showDialog(Dialog _dialog, String key) {
-        mActivity.showDialog(_dialog, key);
-    }
-
-    /**
-     * 关闭对话框
-     */
-    public void dismissDialog(String key) {
-        mActivity.dismissDialog(key);
-    }
-
-    /**
-     * 关闭全部的对话框
-     */
-    public void dismissDialogs() {
-        mActivity.dismissDialogs();
-    }
-
-    /**
-     * 显示对话框碎片
-     *
-     * @param dialogFragment
-     */
-    public void showDialogFrag(DialogFragment dialogFragment, String tag) {
-        mActivity.showDialogFrag(dialogFragment, tag, getChildFragmentManager());
-    }
-
-    /**
-     * 关闭对话框碎片
-     */
-    public void dismissDialogFrag() {
-        mActivity.dismissDialogFrag();
+    public int getColor(@ColorRes int id) {
+        return getResources().getColor(id);
     }
 
     public BaseFragment setOnHideChangeListener(OnHideChangeListener onHideChangeListener) {
@@ -202,6 +124,4 @@ public abstract class BaseFragment extends Fragment {
     public interface OnHideChangeListener {
         void onHideChanged(boolean isHide);
     }
-
-    //endregion
 }

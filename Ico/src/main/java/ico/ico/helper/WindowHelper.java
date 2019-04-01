@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import ico.ico.util.StringUtil;
+
 /**
  * 关于窗口的工具类
  * 对顶部状态栏，底部导航栏，整体窗口显示状态进行一些设置和更改
@@ -143,5 +145,20 @@ public class WindowHelper {
     /** 关闭硬件加速 */
     public void closeHardwareAccelerated(){
         mWin.clearFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+    }
+
+    /**
+     * html-标记格式转换
+     */
+    public static String escapeHtmlTagsReturn(String src) {
+        String rtr = src;
+        if (!StringUtil.isBlank(rtr)) {
+            rtr = rtr.replaceAll("&lt;", "<");
+            rtr = rtr.replaceAll("&gt;", ">");
+            rtr = rtr.replaceAll("&amp;", "&");
+            rtr = rtr.replaceAll("&apos;", "'");
+            rtr = rtr.replaceAll("&quot;", "\"");
+        }
+        return rtr;
     }
 }
