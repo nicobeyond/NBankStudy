@@ -1,32 +1,0 @@
-
-lsquid:S2737"WAdd logic to this catch clause or eliminate it and rethrow the exception automatically.(ö™û
-msquid:ModifiersOrderCheck"EReorder the modifiers to comply with the Java Language Specification.(ÅªÁ¶øÿÿÿÿ
-R
-squid:S106"9Replace this use of System.out or System.err by a logger.(«õÜÿıÿÿÿÿ
-gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(æ¼Í¡
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
-msquid:ModifiersOrderCheck"EReorder the modifiers to comply with the Java Language Specification.(ÙæºÉÿÿÿÿÿ
-msquid:ModifiersOrderCheck"EReorder the modifiers to comply with the Java Language Specification.(ØòıÜøÿÿÿÿ
-R
-squid:S106"9Replace this use of System.out or System.err by a logger.(«õÜÿıÿÿÿÿ
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
-bsquid:S2095"MUse try-with-resources or close this "FileInputStream" in a "finally" clause.(†š­î
-‚ squid:ForLoopCounterChangedCheck"XRefactor the code in order to not assign to this loop counter from within the loop body.(İáºı
-R
-squid:S106"9Replace this use of System.out or System.err by a logger.(œŠÕüÿÿÿÿ
-Tsquid:S1118":Add a private constructor to hide the implicit public one.(°äÖùıÿÿÿÿ
-Bsquid:S1172"(Remove this unused method parameter "e".(¡¢°ıÿÿÿÿ
-fsquid:S3457"Q%n should be used in place of \n to produce the platform-specific line separator.(âÊÉÖ
->squid:S1444")Make this "public static LOG" field final(ŸîŠÌ
-[
-squid:S899"BDo something with the "boolean" value returned by "createNewFile".(Ğ’Íùÿÿÿÿ
-nsquid:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(É˜‡Ç
-psquid:S1488"[Immediately return this expression instead of assigning it to the temporary variable "str".(‰™Âñ
-R
-squid:S106"9Replace this use of System.out or System.err by a logger.(œŠÕüÿÿÿÿ
-csquid:S3008"NRename this field "LOG" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ŸîŠÌ
-Dsquid:S2093"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ
-{"squid:ClassVariableVisibilityCheck"OMake LOG a static final constant or non-public and provide accessors if needed.(ŸîŠÌ
-'squid:S1700"Rename field "LOG"(ŸîŠÌ
-psquid:S3923"[Remove this conditional structure or edit its code blocks so that they're not all the same.( óº
-hsquid:S00101"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(°äÖùıÿÿÿÿ

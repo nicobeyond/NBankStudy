@@ -57,7 +57,6 @@ public class CameraActivity extends BaseFragActivity implements EasyPermissions.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_camera);
         ButterKnife.bind(this);
 
@@ -455,7 +454,7 @@ public class CameraActivity extends BaseFragActivity implements EasyPermissions.
         File file = new File(Environment.getExternalStorageDirectory() + "/test/ddd" + System.currentTimeMillis() + ".jpg");
         try {
             //确保文件存在，如果不存在就修改文件名然后创建，然后返回对应的文件对象
-            File _file = FileUtil.createFileOrRename(file, TAG);
+            File _file = FileUtil.createFileOrRename(file);
             if (_file == null) {
                 return;
             }

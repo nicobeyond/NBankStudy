@@ -1,4 +1,0 @@
-
-`squid:S2095"DUse try-with-resources or close this "Buffer" in a "finally" clause.(®ÌÆÙ8Ïˆïü,
-`squid:S3358"DExtract this nested ternary operation into an independent statement.(ö™÷ğ8Ïˆïü,
-]squid:S1858"A"valueOf" returns a string, there's no need to call "toString()".(ö™÷ğ8Ïˆïü,

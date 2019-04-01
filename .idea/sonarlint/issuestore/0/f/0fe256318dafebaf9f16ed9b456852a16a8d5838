@@ -1,19 +1,0 @@
-
-Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8øÛÊ©ü,
-Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8øÛÊ©ü,
-Ysquid:UnusedPrivateMethod"*Remove this unused private "check" method.(–»‡ÿÿÿÿÿ8øÛÊ©ü,
-ssquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¾ğ‡ëÿÿÿÿÿ8øÛÊ©ü,
-Dsquid:S1604"(Make this anonymous inner class a lambda(å¿£8øÛÊ©ü,
-œsquid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¦æ—&8øÛÊ©ü,
-y
-squid:S135"YReduce the total number of break and continue statements in this loop to use at most one.(Éø³ùÿÿÿÿ8øÛÊ©ü,
-msquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 22 to the 15 allowed.(½Íw8øÛÊ©ü,
-jsquid:MaximumInheritanceDepth"<This class has 6 parents which is greater than 5 authorized.(†¸«”8øÛÊ©ü,
-lsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(¾­æšüÿÿÿÿ8øÛÊ©ü,
-msquid:S1871"LThis branch's code block is the same as the block for the branch on line 82.(ÿŠÄ¡ûÿÿÿÿ8øÛÊ©ü,
-lsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(¨ ¾€úÿÿÿÿ8øÛÊ©ü,
-Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8øÛÊ©ü,
-zsquid:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(å¢¸ûÿÿÿÿ8øÛÊ©ü,
-msquid:S1871"LThis branch's code block is the same as the block for the branch on line 82.(„×ÙĞúÿÿÿÿ8øÛÊ©ü,
-ssquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ò€…Œùÿÿÿÿ8øÛÊ©ü,
-msquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ùã½p8øÛÊ©ü,

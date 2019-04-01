@@ -79,7 +79,7 @@ public class TbsActivity extends BaseFragActivity implements TbsHelper.TbsListen
 
         final String filePath = obtainFilePath();
         if (TextUtils.isEmpty(filePath)) {
-            mActivity.showToast("文件不存在");
+            mPromptHelper.showToast("文件不存在");
             return;
         }
 
@@ -103,7 +103,7 @@ public class TbsActivity extends BaseFragActivity implements TbsHelper.TbsListen
     public void onClickPDFInner() {
         final String filePath = obtainFilePath();
         if (TextUtils.isEmpty(filePath)) {
-            mActivity.showToast("文件不存在");
+            mPromptHelper.showToast("文件不存在");
             return;
         }
         Runnable _task = new Runnable() {
@@ -114,7 +114,7 @@ public class TbsActivity extends BaseFragActivity implements TbsHelper.TbsListen
                     tbsHelper.openFileInner(layoutReadview, filePath, Environment.getExternalStorageDirectory() + "/temp");
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
-                    showToast(e.getMessage());
+                    mPromptHelper.showToast(e.getMessage());
                 }
 
             }
@@ -176,7 +176,7 @@ public class TbsActivity extends BaseFragActivity implements TbsHelper.TbsListen
 
     @Override
     public void onInitFail(int statusCode) {
-        showToast("初始化失败，" + tbsHelper.getErrCodeMessage(statusCode));
+        mPromptHelper.showToast("初始化失败，" + tbsHelper.getErrCodeMessage(statusCode));
         if (statusCode == TbsListener.ErrorCode.NETWORK_NOT_WIFI_ERROR) {
             DialogUtil.createAlert(mActivity, "提示", "当前不处于Wi-Fi网络环境下，是否立即下载X5内核", "稍后再试", null, "立即下载", new DialogInterface.OnClickListener() {
                 @Override
@@ -189,7 +189,7 @@ public class TbsActivity extends BaseFragActivity implements TbsHelper.TbsListen
 
     @Override
     public void onDownloadProgress(int progress) {
-        showToast("正在下载X5内核，进度：" + progress);
+        mPromptHelper.showToast("正在下载X5内核，进度：" + progress);
     }
     //endregion
 }

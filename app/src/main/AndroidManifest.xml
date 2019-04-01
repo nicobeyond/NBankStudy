@@ -25,7 +25,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,8 +39,15 @@
         <activity android:name=".tbs.TbsActivity" />
         <activity android:name=".cipher.SqlCipherActivity" />
         <activity android:name=".test.TestActivity" />
+        <activity android:name=".DialogActivity" />
+        <activity android:name=".camera2.Camera2Activity" />
+        <activity android:name=".camera2.Camera3Activity" />
+        <activity android:name=".camera2.JumpCamera3Activity" />
+        <activity android:name=".logan.LoganActivity" />
+        <activity android:name=".web.WebViewActivity" />
         <activity
-            android:name=".DialogActivity"></activity>
+            android:name=".PanActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"></activity>
     </application>
 
 </manifest>

@@ -68,6 +68,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support:support-v4:28.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -84,5 +85,7 @@ dependencies {
     //butterknife https://github.com/JakeWharton/butterknife 需要放到app的module才有用
     implementation 'com.jakewharton:butterknife:9.0.0-rc1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc1'
-//    implementation project(':IcoCamera')
+    implementation project(':IcoCamera')
+    //美团点评的日志基础库
+    implementation 'com.dianping.android.sdk:logan:1.1.0'
 }

@@ -1,18 +1,0 @@
-
-hsquid:ModifiersOrderCheck"EReorder the modifiers to comply with the Java Language Specification.(ú°‚†
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Äû„›
-lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(­à’Òûÿÿÿÿ
-gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(çåæÈ
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ
-msquid:ModifiersOrderCheck"EReorder the modifiers to comply with the Java Language Specification.(¬¨—Ëùÿÿÿÿ
-7squid:S2386"Make this member "protected".(¬¨—Ëùÿÿÿÿ
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ
-<squid:S1604"(Make this anonymous inner class a lambda(¼˜Œh
-Zsquid:S2147"ECombine this catch with the one at line 125, which has the same body.(Å¡ß
-^squid:UselessImportCheck"0Remove this unused import 'ico.ico.util.Common'.(¼÷“ˆýÿÿÿÿ8ºŒŠ£ü,
-\squid:S1126"BReplace this if-then-else statement by a single method invocation.(Ó²»¼ûÿÿÿÿ
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ
-=squid:S1604"(Make this anonymous inner class a lambda(çåæÈ
-Zsquid:S2147"ECombine this catch with the one at line 125, which has the same body.(åþáÿ
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Ä‹«ó

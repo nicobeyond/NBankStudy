@@ -2,10 +2,15 @@ package com.nbank.study;
 
 public class A {
 
-    public static int i;
+    private String name;
 
-    static {
-        i = 1;
-        System.out.println("===" + i);
+    private String getName() {
+        return name;
     }
+
+    public void das(A a){
+        this.name.equals(a.getName());
+        this.name.equals(a.name);
+    }
+
 }

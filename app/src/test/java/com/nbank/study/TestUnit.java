@@ -2,15 +2,23 @@ package com.nbank.study;
 
 import org.junit.Test;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ico.ico.util.FileUtil;
+import ico.ico.util.SafeCloseUtil;
 import ico.ico.util.StringUtil;
+import ico.ico.util.log;
 
 public class TestUnit {
 
@@ -31,7 +39,36 @@ public class TestUnit {
 ////            e.printStackTrace();
 //        }
 //        as((byte) 40, true);
+        System.out.println(String.format("%1$02X", new Object[]{Integer.valueOf("A000000333010101".length() / 2)}));
+        System.out.println(String.format("%1$02X", new Object[]{"A000000333010101".length() / 2}));
+        System.out.println(String.format("%1$02X", "A000000333010101".length() / 2));
 
+        String READ = "READ";
+        String key = "READ";
+        StringBuilder sb = new StringBuilder();
+        StringBuilder sb1 = new StringBuilder();
+        System.out.println(sb.append(READ + ' ').append(key).append(String.valueOf('\n')).toString());
+        System.out.println(sb1.append(READ + ' ').append(key).append("\n").toString());
+
+
+        List<Integer> candidateActionList1 = Collections.singletonList(2);
+        List<Integer> candidateActionList2 = Arrays.asList(2);
+        System.out.println(candidateActionList1.toString());
+        System.out.println(candidateActionList2.toString());
+        System.out.println("==" + (7 * 1 / 2));
+        System.out.println("==" + (7 / 2));
+
+        String card = "456";
+        int sum1 = (Integer.valueOf(card.substring(0, 1).toUpperCase().toCharArray()[0]) - 55) * 9
+                + (Integer.valueOf(card.substring(1, 2).toUpperCase().toCharArray()[0]) - 55) * 8;
+        int sum2 = (card.substring(0, 1).toUpperCase().toCharArray()[0] - 55) * 9
+                + (card.substring(1, 2).toUpperCase().toCharArray()[0] - 55) * 8;
+        System.out.println(sum1 + "   " + sum2);
+
+
+        int a = 1;
+        int b = 2;
+        System.out.println(((Integer) a) == ((Integer) b));
     }
 
     byte[] data;
@@ -195,6 +232,17 @@ public class TestUnit {
         return result;
     }
 
+    @Test
+    public void testDate() {
+        LocalDate localDate = LocalDate.now();
+        int today = localDate.getDayOfMonth();
+        System.out.println(localDate.getYear());
+        System.out.println(localDate.getMonthValue());
+        System.out.println(localDate.getDayOfMonth());
+        System.out.println(localDate.getDayOfWeek().getValue());
+        System.out.println(localDate.minusDays(today - 1));
+        System.out.println(localDate.lengthOfMonth());
+    }
 
     @Test
     public void testEnum() {
@@ -244,54 +292,13 @@ public class TestUnit {
 //        System.out.println(Arrays.toString(spliteString(d)));
 
 
-
         String das = "wqo.qwe.asdf";
 
         System.out.println(Arrays.toString(das.split("\\.")));
         System.out.println(Arrays.toString(das.split(".")));
 
-    }
-
-
-    public static String[] spliteString(String source) {
-        if (source == null) {
-            return null;
-        }
-        String[] result;
-        //ICO fix 在单线程操作中，ArrayList效率比Vector高
-        List vector = new ArrayList();
-        int startIndex = 0;
-        String element;
-        for (int i = 0; i < source.length(); i++) {
-            if (source.charAt(i) == '\n') {
-                if (i != 0 && source.charAt(i - 1) == '\r') {
-                    element = source.substring(startIndex, i - 1).trim();
-                } else {
-                    element = source.substring(startIndex, i).trim();
-                }
-                if (StringUtil.isNotEmpty(element) && element.charAt(0) != '/') {
-                    vector.add(element);
-                }
-                startIndex = i + 1;
-            } else if (i == source.length() - 1) {
-                if (i != 0 && source.charAt(i - 1) == '\r') {
-                    element = source.substring(startIndex, i - 1).trim();
-                } else {
-                    element = source.substring(startIndex).trim();
-                }
-                if (StringUtil.isNotEmpty(element) && element.charAt(0) != '/') {
-                    vector.add(element);
-                }
-            }
-        }
-        // System.out.println("***SIZE = " + vector.size());
-        result = new String[vector.size()];
-        vector.toArray(result);
-        return result;
-    }
-
-
-    private void trycatch() throws UnsupportedEncodingException, IOException {
-        throw new UnsupportedEncodingException();
+        A a = new A();
+        A b = new A();
+        a.das(b);
     }
 }

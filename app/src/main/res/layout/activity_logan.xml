@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".logan.LoganActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_debug"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tag="0"
+            android:text="开启debug模式" />
+
+        <Button
+            android:id="@+id/btn_log"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="写入日志" />
+
+        <Button
+            android:id="@+id/btn_query"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="获取信息" />
+
+        <Button
+            android:id="@+id/btn_upload1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="上传20190101的日志" />
+
+        <Button
+            android:id="@+id/btn_upload2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="上传当天日志" />
+
+        <TextView
+            android:id="@+id/tv_query"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_upload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</ScrollView>

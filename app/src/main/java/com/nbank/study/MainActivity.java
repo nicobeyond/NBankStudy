@@ -1,49 +1,53 @@
 package com.nbank.study;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.Manifest;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
+import android.support.annotation.NonNull;
+import android.util.Printer;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.nbank.study.camera.CameraActivity;
+import com.nbank.study.camera2.Camera2Activity;
 import com.nbank.study.cipher.SqlCipherActivity;
+import com.nbank.study.logan.LoganActivity;
 import com.nbank.study.tbs.TbsActivity;
 import com.nbank.study.test.TestActivity;
+import com.nbank.study.web.WebViewActivity;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+import com.yitong.universalimageloader.core.ImageLoader;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
+import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import ico.ico.constant.ImageLoaderPrefixConstant;
 import ico.ico.ico.BaseFragActivity;
 import ico.ico.util.Common;
 import ico.ico.util.log;
+import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainActivity extends BaseFragActivity {
-    BroadcastReceiver br = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            log.w("111=========asd.asd.asd received");
-        }
-    };
-    Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            log.w("222=========asd.asd.asd received");
-        }
-    };
+public class MainActivity extends BaseFragActivity implements EasyPermissions.PermissionCallbacks {
     EditText edit;
+    Button button;
 
-    public native int readByte();
+    @BindViews({R.id.icons1, R.id.icons2, R.id.icons3, R.id.icons4, R.id.icons5, R.id.icons6})
+    TextView[] icons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,24 +55,17 @@ public class MainActivity extends BaseFragActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        TextView txt = findViewById(R.id.txt);
-        txt.setAutofillHints(View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_DATE);
-        log.w("===" + ((TextView) findViewById(R.id.text)).getText().toString());
+        // Dump当前的MessageQueue信息.
+        getMainLooper().dump(new Printer() {
 
-//        String[] d = new String[0];
-//        SharedPreferences share = getSharedPreferences("das", Context.MODE_PRIVATE);
-//        log.w("===" + share.getString("aaa", "ccc"));
-//        share.edit().putString("aaa", "bbb").apply();
-//        log.w("===" + share.getString("aaa", "ccc"));
+            @Override
+            public void println(String x) {
+                log.w(x);
+            }
+        }, "onCreate");
 
-//        Spinner spinner1 = (Spinner) findViewById(R.id.spinner_1);
-//        ArrayAdapter<String> spinner1_adapter = new ArrayAdapter<String>(
-//                mActivity, R.layout.spinner, d);
-//        spinner1_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner1.setAdapter(spinner1_adapter);
-//        String da = null;
-//        ((TextView) findViewById(R.id.text)).setText(da);
     }
+
 
     @Override
     protected void onDestroy() {
@@ -76,9 +73,72 @@ public class MainActivity extends BaseFragActivity {
 //        unregisterReceiver(br);
     }
 
+    @BindView(R.id.et_jubing)
+    EditText etJubing;
+
+    @OnClick(R.id.btn_jubing)
+    public void onClickJubing(View v) {
+        int size = Integer.parseInt(etJubing.getText().toString());
+        for (int i = 0; i < size; i++) {
+//            com.nostra13.universalimageloader.core.ImageLoader.getInstance().displayImage("https://mobile.nbcb.com.cn/mobilebank/resources/bankmenu/657.png", ivTest);
+//            ImageLoader.getInstance().displayImage("https://mobile.nbcb.com.cn/mobilebank/resources/bankmenu/657.png", ivTest);
+//            ImageLoader.getInstance().displayImage(ImageLoaderPrefixConstant.FILE + "/storage/emulated/0/DCIM/1547280700753.jpg", ivTest);
+            ImageLoader.getInstance().displayImage(ImageLoaderPrefixConstant.FILE + "/storage/emulated/0/tencent/MicroMsg/WeiXin/wx_camera_1550073465390.mp4", ivTest);
+        }
+    }
+
+    @OnClick(R.id.btn_insert)
+    public void onClickInsert(View v) {
+        SQLiteDatabase db = DBHelper.getDbHelper(this).openHelper.getWritableDatabase();
+        db.execSQL("INSERT INTO test(id) VALUES(" + System.currentTimeMillis() + ");");
+        db.close();
+    }
+
+    @OnClick(R.id.btn_select)
+    public void onClickSelect(View v) {
+        SQLiteDatabase db1 = DBHelper.getDbHelper(this).openHelper.getWritableDatabase();
+
+        Cursor cursor = db1.rawQuery("select id from test", null);
+        String ids = "";
+        while (cursor.moveToNext()) {
+            ids += cursor.getInt(cursor.getColumnIndex("id"));
+        }
+        mPromptHelper.showToast(ids);
+    }
+
+    @OnClick(R.id.btn_permission)
+    public void onClickPermission(View v) {
+        EasyPermissions.requestPermissions(mActivity, "a", 0x003, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
+        startActivity(new Intent(mActivity, PanActivity.class));
+    }
+
+    @OnClick(R.id.btn_webview)
+    public void onClickWeb(View v) {
+        startActivity(new Intent(this, WebViewActivity.class));
+    }
+
+    @OnClick(R.id.btn_logan)
+    public void onClickLogan(View v) {
+        startActivity(new Intent(this, LoganActivity.class));
+    }
+
     @OnClick(R.id.btn_camera)
     public void onClickCamera(View v) {
+        if (!EasyPermissions.hasPermissions(mActivity, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            EasyPermissions.requestPermissions(mActivity, "", 0x001, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            return;
+        }
         startActivity(new Intent(this, CameraActivity.class));
+    }
+
+
+    @OnClick(R.id.btn_camera2)
+    public void onClickCamera2(View v) {
+        if (!EasyPermissions.hasPermissions(mActivity, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            EasyPermissions.requestPermissions(mActivity, "", 0x002, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            return;
+        }
+        startActivity(new Intent(this, Camera2Activity.class));
     }
 
     @OnClick(R.id.btn_tbs)
@@ -119,23 +179,23 @@ public class MainActivity extends BaseFragActivity {
         File file = new File(Environment.getExternalStorageDirectory() + "/aaa/bbb/ccc/222.txt");
         if (!file.getParentFile().exists()) {
             if (!file.getParentFile().mkdirs()) {
-                showToast("文件夹创建失败");
+                mPromptHelper.showToast("文件夹创建失败");
                 return;
             }
         }
         if (file.exists()) {
             if (!file.delete()) {
-                showToast("文件已存在，文件删除失败");
+                mPromptHelper.showToast("文件已存在，文件删除失败");
                 return;
             }
         }
         boolean flag;
         try {
             flag = file.createNewFile();
-            showToast("文件创建" + flag);
+            mPromptHelper.showToast("文件创建" + flag);
         } catch (IOException e) {
             e.printStackTrace();
-            showToast("文件创建异常" + e.toString());
+            mPromptHelper.showToast("文件创建异常" + e.toString());
         }
     }
 
@@ -152,13 +212,57 @@ public class MainActivity extends BaseFragActivity {
 
     @OnClick(R.id.btn_dialog)
     public void onClickDialog(View v) {
-        startActivity(new Intent(MainActivity.this, DialogActivity.class));
-        mHandler.postDelayed(new Runnable() {
+//        startActivity(new Intent(MainActivity.this, DialogActivity.class));
+//        mHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//            }
+//        }, 5000);
+        if (myBottomDialogFrag == null) {
+            myBottomDialogFrag = new MyBottomDialogFrag();
+        }
+        mPromptHelper.showDialogFrag(myBottomDialogFrag, MyBottomDialogFrag.class.getSimpleName());
+    }
+
+    MyBottomDialogFrag myBottomDialogFrag;
+
+    String url = "https://oimageb5.ydstatic.com/image?id=5057719474449425631&product=adpublish&w=640&h=480&sc=0&rm=2&gsb=0&gsbd=60";
+
+    @OnClick(R.id.btn_download)
+    public void onClickDown(View v) {
+        Picasso.with(mActivity).load(url).into(new Target() {
             @Override
-            public void run() {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                log.w("===onBitmapLoaded");
             }
-        }, 5000);
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                log.w("===onBitmapFailed");
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                log.w("===onPrepareLoad");
+            }
+        });
+    }
+
+    @BindView(R.id.iv_test)
+    ImageView ivTest;
+
+    @OnClick(R.id.btn_load)
+    public void onClickLoad(View v) {
+        Picasso.with(mActivity).load(url).into(ivTest);
+//        HttpResponseCache cache = HttpResponseCache.getInstalled();
+//        try {
+//            CacheResponse res = cache.get(URI.create(url), "GET", null);
+//            Bitmap bitmap = BitmapFactory.decodeStream(res.getBody());
+//            ivTest.setImageBitmap(bitmap);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @OnClick(R.id.btn_mem)
@@ -186,4 +290,29 @@ public class MainActivity extends BaseFragActivity {
         }
         log.w("===" + (System.currentTimeMillis() - time), "2");
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        switch (requestCode) {
+            case 0x001:
+                onClickCamera(null);
+                break;
+            case 0x002:
+                onClickCamera2(null);
+                break;
+        }
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+
+    }
+
+
 }
