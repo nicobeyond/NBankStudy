@@ -432,16 +432,23 @@ public class log {
      */
     public static List<Byte> readFile(File file) throws IOException {
         List<Byte> list = new ArrayList<Byte>();
-        FileInputStream fileInputStream = new FileInputStream(file);
-        while (true) {
-            byte[] buffer = new byte[1024 * 4 * 4];
-            int len = fileInputStream.read(buffer);
-            if (len == -1) {
-                break;
+        FileInputStream fileInputStream = null;
+        try {
+            fileInputStream = new FileInputStream(file);
+            while (true) {
+                byte[] buffer = new byte[1024 * 4 * 4];
+                int len = fileInputStream.read(buffer);
+                if (len == -1) {
+                    break;
+                }
+                for (int i = 0; i < len; i++) {
+                    List<Byte> _list = Arrays.asList(buffer[i]);
+                    list.add(_list.get(0));
+                }
             }
-            for (int i = 0; i < len; i++) {
-                List<Byte> _list = Arrays.asList(buffer[i]);
-                list.add(_list.get(0));
+        } finally {
+            if (fileInputStream != null) {
+                fileInputStream.close();
             }
         }
         return list;

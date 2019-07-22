@@ -35,7 +35,7 @@ public final class DateUtil {
      * @return
      * @throws ParseException
      */
-    public static long getLong(String time, String format) throws ParseException {
+    public static long getTimes(String time, String format) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.parse(time).getTime();
     }
@@ -48,11 +48,25 @@ public final class DateUtil {
      * @param format       {@link ico.ico.util.DateUtil.Format}
      * @return String
      */
-    public static String fromTimestamp(long milliseconds, String format) {
+    public static String format(long milliseconds, String format) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(milliseconds);
     }
-
+    /**
+     * 将一个字符串的时间数据转化为另外一种字符串的时间数据
+     *
+     * @param dateStr    字符串
+     * @param fromFormat 原时间格式
+     * @param toFormat   新时间格式
+     * @return
+     * @throws ParseException
+     */
+    public static String formatDate(String dateStr, String fromFormat, String toFormat) throws ParseException {
+        SimpleDateFormat fromDateFormat = new SimpleDateFormat(fromFormat);
+        Date date = fromDateFormat.parse(dateStr);
+        SimpleDateFormat toDateFormat = new SimpleDateFormat(toFormat);
+        return toDateFormat.format(date);
+    }
     /**
      * 将字符串根据指定的格式转换为Date
      *

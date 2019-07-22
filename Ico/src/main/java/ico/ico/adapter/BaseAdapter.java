@@ -30,7 +30,7 @@ import ico.ico.constant.ImageLoaderPrefixConstant;
  * Created by Administrator on 2017/8/9.
  */
 
-public class BaseAdapter<DATA, HOLDER extends BaseAdapter.BaseViewHolder> extends RecyclerView.Adapter<HOLDER> {
+public class BaseAdapter<DATA, HOLDER extends BaseAdapter.BaseViewHolder<DATA>> extends RecyclerView.Adapter<HOLDER> {
 
     public final static DisplayImageOptions.Builder IMAGE_BUILD = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true);
 
@@ -65,7 +65,7 @@ public class BaseAdapter<DATA, HOLDER extends BaseAdapter.BaseViewHolder> extend
 
     @Override
     public HOLDER onCreateViewHolder(ViewGroup parent, int viewType) {
-        return (HOLDER) new BaseViewHolder(mInflater.inflate(mLayoutId, parent, false));
+        return (HOLDER) new BaseViewHolder<DATA>(mInflater.inflate(mLayoutId, parent, false));
     }
 
     @Override
@@ -95,7 +95,7 @@ public class BaseAdapter<DATA, HOLDER extends BaseAdapter.BaseViewHolder> extend
         return this;
     }
 
-    protected void onWidgetInit(BaseViewHolder holder, int position) {
+    protected void onWidgetInit(BaseViewHolder<DATA> holder, int position) {
 
     }
 
@@ -183,54 +183,57 @@ public class BaseAdapter<DATA, HOLDER extends BaseAdapter.BaseViewHolder> extend
         setSelectPosition(-1);
     }
 
-    public class BaseViewHolder extends RecyclerView.ViewHolder {
+    public static class BaseViewHolder<DATA> extends RecyclerView.ViewHolder {
         public HashMap<String, Object> extra = new HashMap<>();
         public DATA itemData;
-        private View mView;
         private SparseArray<View> mViews;   //视图集合
 
         public BaseViewHolder(View itemView) {
             super(itemView);
             mViews = new SparseArray<>();
-            mView = itemView;
         }
 
         /*根据控件id获取视图*/
         public View getView(int widgetId) {
             View view = mViews.get(widgetId);
             if (view == null) {
-                view = mView.findViewById(widgetId);
+                view = itemView.findViewById(widgetId);
                 mViews.put(widgetId, view);
             }
             return view;
         }
 
         /*设置文字控件*/
-        public BaseViewHolder setText(int widgetId, CharSequence str) {
+        public BaseViewHolder<DATA> setText(int widgetId, CharSequence str) {
             ((TextView) getView(widgetId)).setText(str);
             return this;
         }
 
         /*设置文字控件*/
-        public BaseViewHolder setText(int widgetId, @StringRes int strRes) {
+        public BaseViewHolder<DATA> setText(int widgetId, @StringRes int strRes) {
             ((TextView) getView(widgetId)).setText(strRes);
             return this;
         }
 
+        /*设置文字控件的文本*/
+        public String getText(int widgetId) {
+            return ((TextView) getView(widgetId)).getText().toString();
+        }
+
         /*设置控件的background属性*/
-        public BaseViewHolder setBackground(int widgetId, @DrawableRes int resId) {
+        public BaseViewHolder<DATA> setBackground(int widgetId, @DrawableRes int resId) {
             getView(widgetId).setBackgroundResource(resId);
             return this;
         }
 
         /*设置控件的TextColor属性*/
-        public BaseViewHolder setTextColor(int widgetId, @ColorInt int color) {
+        public BaseViewHolder<DATA> setTextColor(int widgetId, @ColorInt int color) {
             ((TextView) getView(widgetId)).setTextColor(color);
             return this;
         }
 
         /*设置Checked属性*/
-        public BaseViewHolder setChecked(boolean check, int... widgetId) {
+        public BaseViewHolder<DATA> setChecked(boolean check, int... widgetId) {
             for (int i = 0; i < widgetId.length; i++) {
                 ((CompoundButton) getView(widgetId[i])).setChecked(check);
             }
@@ -238,27 +241,27 @@ public class BaseAdapter<DATA, HOLDER extends BaseAdapter.BaseViewHolder> extend
         }
 
         /*设置的background属性*/
-        public BaseViewHolder toogleChecked(int widgetId) {
+        public BaseViewHolder<DATA> toogleChecked(int widgetId) {
             CompoundButton button = ((CompoundButton) getView(widgetId));
             button.setChecked(!button.isChecked());
             return this;
         }
 
         /*设置文字控件,从tag中取字符串,通过格式化占位*/
-        public BaseViewHolder setTagText(int widgetId, Object... obj) {
+        public BaseViewHolder<DATA> setTagText(int widgetId, Object... obj) {
             TextView textView = (TextView) getView(widgetId);
             textView.setText(String.format(textView.getTag().toString(), obj));
             return this;
         }
 
         /*设置本地图形控件*/
-        public BaseViewHolder loadImage(int widgetId, int resorceId) {
+        public BaseViewHolder<DATA> loadImage(int widgetId, int resorceId) {
             ImageLoader.getInstance().displayImage(ImageLoaderPrefixConstant.DRAWABLE + resorceId, ((ImageView) getView(widgetId)), IMAGE_BUILD.build());
             return this;
         }
 
         /*设置本地图形控件*/
-        public BaseViewHolder loadImage(int widgetId, String url) {
+        public BaseViewHolder<DATA> loadImage(int widgetId, String url) {
             if (TextUtils.isEmpty(url)) {
                 throw new IllegalArgumentException("url不能为空");
             }
@@ -267,13 +270,13 @@ public class BaseAdapter<DATA, HOLDER extends BaseAdapter.BaseViewHolder> extend
         }
 
         /*设置本地图形控件*/
-        public BaseViewHolder loadImage(int widgetId, int resorceId, int holderResId, int errorResId) {
+        public BaseViewHolder<DATA> loadImage(int widgetId, int resorceId, int holderResId, int errorResId) {
             ImageLoader.getInstance().displayImage(ImageLoaderPrefixConstant.DRAWABLE + resorceId, ((ImageView) getView(widgetId)), IMAGE_BUILD.showImageOnLoading(holderResId).showImageOnFail(errorResId).showImageForEmptyUri(errorResId).build());
             return this;
         }
 
         /*设置本地图形控件*/
-        public BaseViewHolder loadImage(int widgetId, String url, int holderResId, int errorResId) {
+        public BaseViewHolder<DATA> loadImage(int widgetId, String url, int holderResId, int errorResId) {
             if (TextUtils.isEmpty(url)) {
                 ImageLoader.getInstance().displayImage(ImageLoaderPrefixConstant.DRAWABLE + errorResId, ((ImageView) getView(widgetId)), IMAGE_BUILD.showImageOnLoading(holderResId).showImageOnFail(errorResId).showImageForEmptyUri(errorResId).build());
             } else {
@@ -283,7 +286,7 @@ public class BaseAdapter<DATA, HOLDER extends BaseAdapter.BaseViewHolder> extend
         }
 
         /*设置本地图形控件*/
-        public BaseViewHolder loadImage(int widgetId, String url, int errorResId, DisplayImageOptions displayImageOptions) {
+        public BaseViewHolder<DATA> loadImage(int widgetId, String url, int errorResId, DisplayImageOptions displayImageOptions) {
             if (TextUtils.isEmpty(url)) {
                 ImageLoader.getInstance().displayImage(ImageLoaderPrefixConstant.DRAWABLE + errorResId, ((ImageView) getView(widgetId)), displayImageOptions);
             } else {
@@ -293,7 +296,7 @@ public class BaseAdapter<DATA, HOLDER extends BaseAdapter.BaseViewHolder> extend
         }
 
         /*设置控件点击监听*/
-        public BaseViewHolder setOnClickListner(View.OnClickListener listner, int... widgetId) {
+        public BaseViewHolder<DATA> setOnClickListner(View.OnClickListener listner, int... widgetId) {
             for (int i = 0; i < widgetId.length; i++) {
                 getView(widgetId[i]).setTag(this);
                 getView(widgetId[i]).setOnClickListener(listner);
@@ -302,7 +305,7 @@ public class BaseAdapter<DATA, HOLDER extends BaseAdapter.BaseViewHolder> extend
         }
 
         /*设置控件选中监听*/
-        public BaseViewHolder setOnCheckChangedListner(CompoundButton.OnCheckedChangeListener listner, int... widgetId) {
+        public BaseViewHolder<DATA> setOnCheckChangedListner(CompoundButton.OnCheckedChangeListener listner, int... widgetId) {
             for (int i = 0; i < widgetId.length; i++) {
                 getView(widgetId[i]).setTag(this);
                 ((CheckBox) getView(widgetId[i])).setOnCheckedChangeListener(listner);
@@ -311,7 +314,7 @@ public class BaseAdapter<DATA, HOLDER extends BaseAdapter.BaseViewHolder> extend
         }
 
         /*设置控件长按监听*/
-        public BaseViewHolder setOnLongClickListner(View.OnLongClickListener listener, int... widgetId) {
+        public BaseViewHolder<DATA> setOnLongClickListner(View.OnLongClickListener listener, int... widgetId) {
             for (int i = 0; i < widgetId.length; i++) {
                 getView(widgetId[i]).setTag(this);
                 getView(widgetId[i]).setOnLongClickListener(listener);
@@ -320,7 +323,7 @@ public class BaseAdapter<DATA, HOLDER extends BaseAdapter.BaseViewHolder> extend
         }
 
         /*设置Enable属性*/
-        public BaseViewHolder setEnable(boolean enable, int... widgetId) {
+        public BaseViewHolder<DATA> setEnable(boolean enable, int... widgetId) {
             for (int i = 0; i < widgetId.length; i++) {
                 getView(widgetId[i]).setEnabled(enable);
             }
@@ -328,7 +331,7 @@ public class BaseAdapter<DATA, HOLDER extends BaseAdapter.BaseViewHolder> extend
         }
 
         /*设置visibility属性*/
-        public BaseViewHolder setVisibility(int visibility, int... widgetId) {
+        public BaseViewHolder<DATA> setVisibility(int visibility, int... widgetId) {
             for (int i = 0; i < widgetId.length; i++) {
                 getView(widgetId[i]).setVisibility(visibility);
             }

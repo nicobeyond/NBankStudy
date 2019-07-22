@@ -1,15 +1,16 @@
 package ico.ico.util;
 
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtil {
     /** 判断字符串是否为null或者"" */
@@ -91,7 +92,6 @@ public class StringUtil {
      * @param texts 要被拼接的字符串数组,如果传入null或者空数组，则将返回空字符串
      * @return
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public static String join(String str, String... texts) {
         //java1.8可以通过String.join来实现，不过效率上比本方法要慢
 //        try {
@@ -120,13 +120,10 @@ public class StringUtil {
      * @param str   连接的字符串
      * @param texts 用于拼接的字符串集合，使用list
      * @return String 拼接后的字符串
-     * @deprecated 这个方法已经过时，因为如果参数texts使用linkedlist，效率会非常的慢，所以建议使用迭代器参数的join方法
      */
-    @Deprecated
-    public static String join(String str, List<String> texts) {
+    public static String join(String str, ArrayList<String> texts) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < texts.size(); i++) {
-            log.w("===" + i);
             String tmp = texts.get(i);
             sb.append(tmp);
             if (i < texts.size() - 1) {
@@ -137,12 +134,18 @@ public class StringUtil {
     }
 
     /** 将一个字符串集合根据某个字符串连接 */
-    public static String join(String str, Iterator<String> texts) {
+    public static String join(String str, LinkedList<String> texts) {
+        Iterator<String> iter = texts.iterator();
+        return join(str, iter);
+    }
+
+    /** 将一个字符串集合根据某个字符串连接 */
+    public static String join(String str, Iterator<String> iter) {
         StringBuilder sb = new StringBuilder();
-        while (texts.hasNext()) {
-            String tmp = texts.next();
+        while (iter.hasNext()) {
+            String tmp = iter.next();
             sb.append(tmp);
-            if (texts.hasNext()) {
+            if (iter.hasNext()) {
                 sb.append(str);
             }
         }
@@ -204,17 +207,131 @@ public class StringUtil {
     /**
      * 每隔几个字符插入一个指定字符
      *
-     * @param s        原字符串
-     * @param iStr     要插入的字符串
+     * @param src      原字符串
+     * @param insert   要插入的字符串
      * @param interval 间隔字符数量
      * @return
      */
-    public static String insert(String s, String iStr, int interval) {
-        StringBuffer s1 = new StringBuffer(s);
+    public static String insert(String src, String insert, int interval) {
+        StringBuffer s1 = new StringBuffer(src);
         int index;
         for (index = interval; index < s1.length(); index += (interval + 1)) {
-            s1.insert(index, iStr);
+            s1.insert(index, insert);
         }
         return s1.toString();
+    }
+
+    /** 将字符串中第一个匹配到的数值进行格式化，添加，和保留小数点两位（不足两位+0） */
+    public static String formatAmount(String str) {
+        //通过正则表达式把数字部分截取出来，处理完成后通过替换的方式再放回去
+        Pattern pattern = Pattern.compile("(\\d+[.]{1}\\d+)|([.]{1}\\d+)|(\\d+)");
+        Matcher mat = pattern.matcher(str);
+        if (!mat.find()) {
+            return str;
+        }
+        String matchStr = mat.group();
+        //通过.进行分隔
+        String[] splitMatchStr = matchStr.split("\\.");
+        String zheng = "";//整数部分
+        String xiaoshu = "";//小数部分
+        /* 处理整数部分 */
+        if (splitMatchStr[0].length() <= 3) {
+            zheng = splitMatchStr[0];
+        } else {
+            int yu = splitMatchStr[0].length() % 3;
+            if (yu == 0) {
+                zheng = insert(splitMatchStr[0], ",", 3);
+            } else {
+                zheng = splitMatchStr[0].substring(0, yu) + "," + insert(splitMatchStr[0].substring(yu, splitMatchStr[0].length()), ",", 3);
+            }
+        }
+        if (StringUtil.isBlank(zheng)) {
+            zheng = "0";
+        }
+        /* 处理小数部分 */
+        if (splitMatchStr.length == 1) {
+            xiaoshu = "00";
+        } else {
+            if (splitMatchStr[1].length() <= 2) {
+                xiaoshu = splitMatchStr[1];
+            } else {
+                xiaoshu = splitMatchStr[1].substring(0, 2);
+            }
+        }
+        if (xiaoshu.length() == 1) {
+            xiaoshu += "0";
+        }
+        String result = zheng + "." + xiaoshu;
+        return str.replace(matchStr, result);
+    }
+
+    /** 将比例字符串中第一个匹配到的数值进行格式化，只保留两位小数点（不补0） */
+    public static String formatRateAll(String str) {
+        //通过正则表达式把数字部分截取出来，处理完成后通过替换的方式再放回去
+        Pattern pattern = Pattern.compile("(\\d+[.]{1}\\d+)|([.]{1}\\d+)|(\\d+)");
+        Matcher mat = pattern.matcher(str);
+        while (mat.find()) {
+            String matchStr = mat.group();
+            //通过.进行分隔
+            String[] splitMatchStr = matchStr.split("\\.");
+            String zheng = "";//整数部分
+            String xiaoshu = "";//小数部分
+            if (splitMatchStr[0].length() == 0) {
+                zheng = "0";
+            } else {
+                zheng = splitMatchStr[0];
+            }
+            /* 处理小数部分 */
+            if (splitMatchStr.length == 1) {
+                return str.replace(matchStr, zheng);
+            }
+            if (splitMatchStr[1].length() <= 2) {
+                xiaoshu = splitMatchStr[1];
+            } else {
+                xiaoshu = splitMatchStr[1].substring(0, 2);
+            }
+            String replaceStr = zheng + "." + xiaoshu;
+            str = str.replace(matchStr, replaceStr);
+        }
+        return str;
+    }
+
+    /** 将比例字符串中第一个匹配到的数值进行格式化，只保留两位小数点（不补0） */
+    public static String formatRate(String str) {
+        //通过正则表达式把数字部分截取出来，处理完成后通过替换的方式再放回去
+        Pattern pattern = Pattern.compile("(\\d+[.]{1}\\d+)|([.]{1}\\d+)|(\\d+)");
+        Matcher mat = pattern.matcher(str);
+        if (!mat.find()) {
+            return str;
+        }
+        String matchStr = mat.group();
+        //通过.进行分隔
+        String[] splitMatchStr = matchStr.split("\\.");
+        String zheng = "";//整数部分
+        String xiaoshu = "";//小数部分
+        if (splitMatchStr[0].length() == 0) {
+            zheng = "0";
+        } else {
+            zheng = splitMatchStr[0];
+        }
+        /* 处理小数部分 */
+        if (splitMatchStr.length == 1) {
+            return str.replace(matchStr, zheng);
+        }
+        if (splitMatchStr[1].length() <= 2) {
+            xiaoshu = splitMatchStr[1];
+        } else {
+            xiaoshu = splitMatchStr[1].substring(0, 2);
+        }
+        String result = zheng + "." + xiaoshu;
+        return str.replace(matchStr, result);
+    }
+
+    /** 对字符串比例值进行转化，添加百分号标志 */
+    public static String mapRate(String str) {
+        if (!str.endsWith("%")) {
+            return str + "%";
+        }
+        return str;
     }
 }

@@ -107,7 +107,7 @@ public class WifiMgr {
         List<ScanResult> tmpList = wifiMgr.getScanResults();
         List<Wifi> list = new ArrayList<>();
         for (ScanResult re : tmpList) {
-            if (TextUtils.equals(re.BSSID,bssid)) {
+            if (TextUtils.equals(re.BSSID, bssid)) {
                 wifi = new Wifi(re);
                 wifi.setPassword(pwdMap.get(re.BSSID));
                 break;
@@ -130,7 +130,7 @@ public class WifiMgr {
         List<Wifi> tmpList = WifiMgr.getScanResult(context);
         // 筛选为设备的wifi点
         for (Wifi tmpWifi : tmpList) {
-            if (TextUtils.equals(tmpWifi.getBssid(),wifi.getBssid())) {
+            if (TextUtils.equals(tmpWifi.getBssid(), wifi.getBssid())) {
                 return true;
             }
         }
@@ -328,7 +328,7 @@ public class WifiMgr {
                 .getConfiguredNetworks();
         List<Integer> netIds = new ArrayList<Integer>();
         for (WifiConfiguration tmp : configuredNetworks) {
-            if ((tmp.BSSID != null) && (TextUtils.equals(tmp.BSSID,bssid))) {
+            if ((tmp.BSSID != null) && (TextUtils.equals(tmp.BSSID, bssid))) {
                 netIds.add(tmp.networkId);
             }
         }
@@ -337,9 +337,8 @@ public class WifiMgr {
 
     /**
      * 获取wifi状态
-     *
-     * @param context
-     * @return
+     * <p>
+     * {@link WifiManager#getWifiState()}
      */
     public static int getWifiState(Context context) {
         // 获取wifi管理器
@@ -348,12 +347,7 @@ public class WifiMgr {
         return wifiMgr.getWifiState();
     }
 
-    /**
-     * 获取当前连接的Wifi信息
-     *
-     * @param context
-     * @return
-     */
+    /** 获取当前连接的Wifi信息 */
     public static Wifi getCurrWifi(Context context) {
         // 获取wifi管理器
         WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
@@ -398,7 +392,7 @@ public class WifiMgr {
     public static Boolean isConnect(Context context, Wifi wifi) {
         Wifi _wifi = WifiMgr.getCurrWifi(context);
         // 判断是否已连接上指定的Wifi
-        if ((_wifi != null) && (!TextUtils.isEmpty(_wifi.getBssid())) && (TextUtils.equals(_wifi.getBssid(),wifi.getBssid())) && (!TextUtils.isEmpty(_wifi.getIp())) && (!TextUtils.equals(_wifi.getIp(),"0.0.0.0"))) {
+        if ((_wifi != null) && (!TextUtils.isEmpty(_wifi.getBssid())) && (TextUtils.equals(_wifi.getBssid(), wifi.getBssid())) && (!TextUtils.isEmpty(_wifi.getIp())) && (!TextUtils.equals(_wifi.getIp(), "0.0.0.0"))) {
             return true;
         }
         return false;

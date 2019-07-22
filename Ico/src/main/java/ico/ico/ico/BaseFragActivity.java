@@ -4,8 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -30,6 +33,15 @@ public abstract class BaseFragActivity extends AppCompatActivity {
         /*程序退出广播*/
         exitReceiver = new ExitReceiver();
         mActivity.registerReceiver(exitReceiver, new IntentFilter(ActionConstant.BROADCAST_APP_EXIT));
+    }
+
+    @ColorInt
+    public int getColors(@ColorRes int id) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return getResources().getColor(id, getTheme());
+        } else {
+            return getResources().getColor(id);
+        }
     }
 
     /*点击空白处隐藏软键盘*/

@@ -47,9 +47,9 @@ dependencies {
     api 'com.fasterxml.jackson.core:jackson-databind:2.7.1'
     api 'com.fasterxml.jackson.core:jackson-core:2.7.1'
     api 'com.fasterxml.jackson.core:jackson-annotations:2.7.1'
-    api 'com.android.support:support-v4:27.+'
-    api 'com.android.support:appcompat-v7:27.+'
-    api 'com.android.support:recyclerview-v7:27.+'
+    api 'com.android.support:support-v4:28.+'
+    api 'com.android.support:appcompat-v7:28.+'
+    api 'com.android.support:recyclerview-v7:28.+'
 
     //加载更多 https://github.com/ybq/Endless-RecyclerView
     api 'com.github.ybq:Endless-RecyclerView:1.0.3'
@@ -74,12 +74,15 @@ dependencies {
 
     //    api 'javax.activation:activation:1.1.1'
 
-    //图片加载器,主要用在ico.ico.widget.imageview中
+    /* 图片加载器 */
+    //主要用在ico.ico.widget.imageview中
+    api 'com.squareup.picasso:picasso:2.71828'
 
-    //    api 'com.squareup.picasso:picasso:2.3.2'
-
-    ////imageloader,图片加载器
+    //imageloader,图片加载器
     api 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    //glide
+    api 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
     //可以在低版本api中使用高版本的样式
 

@@ -47,7 +47,8 @@
         <activity android:name=".web.WebViewActivity" />
         <activity
             android:name=".PanActivity"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"></activity>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity android:name=".image.ImageTestActivity"></activity>
     </application>
 
 </manifest>

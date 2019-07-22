@@ -33,7 +33,7 @@ public class DialogActivity extends BaseFragActivity {
     }
 
 
-    class MyAdapter extends BaseAdapter<String, BaseAdapter.BaseViewHolder> {
+    class MyAdapter extends BaseAdapter<String, BaseAdapter.BaseViewHolder<String>> {
 
         public MyAdapter(Context context) {
             super(context, R.layout.item);
@@ -48,7 +48,7 @@ public class DialogActivity extends BaseFragActivity {
         }
 
         @Override
-        public void onBindViewHolder(BaseAdapter.BaseViewHolder holder, final int position) {
+        public void onBindViewHolder(BaseAdapter.BaseViewHolder<String> holder, final int position) {
             super.onBindViewHolder(holder, position);
             Object obj = holder.getView(R.id.text).getTag();
             BaseAdapter.BaseViewHolder tagHolder;

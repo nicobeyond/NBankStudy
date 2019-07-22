@@ -4,9 +4,13 @@ import android.Manifest;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.util.Base64;
 import android.util.Printer;
 import android.view.View;
 import android.widget.Button;
@@ -15,9 +19,15 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.nbank.study.camera.CameraActivity;
 import com.nbank.study.camera2.Camera2Activity;
 import com.nbank.study.cipher.SqlCipherActivity;
+import com.nbank.study.image.ImageTestActivity;
 import com.nbank.study.logan.LoganActivity;
 import com.nbank.study.tbs.TbsActivity;
 import com.nbank.study.test.TestActivity;
@@ -27,6 +37,8 @@ import com.yitong.universalimageloader.core.ImageLoader;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -52,16 +64,79 @@ public class MainActivity extends BaseFragActivity implements EasyPermissions.Pe
         ButterKnife.bind(this);
 
         // Dump当前的MessageQueue信息.
-        getMainLooper().dump(new Printer() {
+//        getMainLooper().dump(new Printer() {
+//
+//            @Override
+//            public void println(String x) {
+//                log.w(x);
+//            }
+//        }, "onCreate");
+
+         CountDownTimer countDownTimer = new CountDownTimer(1000,100) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                log.w("onTick"+millisUntilFinished);
+            }
 
             @Override
-            public void println(String x) {
-                log.w(x);
+            public void onFinish() {
+                log.w("onFinish");
             }
-        }, "onCreate");
-
+        };
+         countDownTimer.start();
+        test();
     }
 
+
+
+    public void test() {
+        try {
+            byte[] byte1 = Base64.encode("aklsjdklas".getBytes(), Base64.DEFAULT);
+            byte[] byte2 = Base64.encode(",.zxnmvnjaoerp".getBytes(), Base64.DEFAULT);
+            byte[] byte3 = Base64.encode("roweijfskldmv,cx".getBytes(), Base64.DEFAULT);
+            byte[] byte4 = Base64.encode("v,lzxjnfhwioeur".getBytes(), Base64.DEFAULT);
+            byte[] byte5 = Base64.encode("qweiropjvmklc".getBytes(), Base64.DEFAULT);
+            System.out.println("1===" + bytes2Int16(" ", byte1));
+            System.out.println("2===" + bytes2Int16(" ", byte2));
+            System.out.println("3===" + bytes2Int16(" ", byte3));
+            System.out.println("4===" + bytes2Int16(" ", byte4));
+            System.out.println("5===" + bytes2Int16(" ", byte5));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 将单字节转化为16进制
+     *
+     * @param buffer
+     * @return 转化后的16进制字符串，如果是长度为1则前面加0
+     */
+    public static String byte2Int16(byte buffer) {
+        String str = Integer.toString(buffer & 0xFF, 16).toUpperCase();
+        return str.length() == 1 ? 0 + str : str;
+    }
+
+    /**
+     * 将一个字节数组转化为16进制然后通过连接符拼接在一起
+     *
+     * @param buffers 字符数组
+     * @param joinStr 连接符
+     * @return
+     */
+    public static String bytes2Int16(String joinStr, byte... buffers) {
+        if (joinStr == null) {
+            joinStr = "";
+        }
+        StringBuilder sb = new StringBuilder("");
+        for (int i = 0; i < buffers.length; i++) {
+            sb.append(byte2Int16(buffers[i]));
+            if (i != buffers.length - 1) {
+                sb.append(joinStr);
+            }
+        }
+        return sb.toString().toUpperCase();
+    }
 
     @Override
     protected void onDestroy() {
@@ -83,11 +158,31 @@ public class MainActivity extends BaseFragActivity implements EasyPermissions.Pe
         }
     }
 
+    @BindView(R.id.et_file)
+    EditText etFile;
+
+    @OnClick(R.id.btn_refresh)
+    public void onClickRefresh(View v) {
+        Common.refreshMediaSync(mActivity, etFile.getText().toString());
+    }
+
     @OnClick(R.id.btn_insert)
     public void onClickInsert(View v) {
         SQLiteDatabase db = DBHelper.getDbHelper(this).openHelper.getWritableDatabase();
         db.execSQL("INSERT INTO test(id) VALUES(" + System.currentTimeMillis() + ");");
         db.close();
+        Logger log = Logger.getLogger(getPackageName());
+        log.setLevel(Level.ALL);
+        log.severe("severe");
+        log.warning("warning");
+        log.info("info");
+        log.config("config");
+        log.fine("fine");
+        log.finer("finer");
+        log.finest("finest");
+
+        log.entering("com.mycompany.mylib.Reader", "read", new Object[]{v.toString()});
+        log.exiting("com.mycompany.mylib.Reader", "read", "dd");
     }
 
     @OnClick(R.id.btn_select)
@@ -205,6 +300,25 @@ public class MainActivity extends BaseFragActivity implements EasyPermissions.Pe
 //        log.w("===" + Common.checkNavigationBar(this));//true true
 
     }
+
+
+    @OnClick({R.id.btn_image, R.id.btn_glide, R.id.btn_picasso})
+    public void onClickImage(View v) {
+        int type = 1;
+        switch (v.getId()) {
+            case R.id.btn_image:
+                type = 1;
+                break;
+            case R.id.btn_glide:
+                type = 2;
+                break;
+            case R.id.btn_picasso:
+                type = 3;
+                break;
+        }
+        startActivity(ImageTestActivity.getIntent(mActivity, type));
+    }
+
 
     @OnClick(R.id.btn_dialog)
     public void onClickDialog(View v) {

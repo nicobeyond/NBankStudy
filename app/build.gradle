@@ -61,13 +61,12 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'com.android.support:support-v4:28.+'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -87,4 +86,5 @@ dependencies {
     implementation project(':IcoCamera')
     //美团点评的日志基础库
     implementation 'com.dianping.android.sdk:logan:1.1.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 }

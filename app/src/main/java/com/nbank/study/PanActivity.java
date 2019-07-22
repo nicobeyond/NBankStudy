@@ -12,5 +12,6 @@ public class PanActivity extends AppCompatActivity {
 
 
         getSupportFragmentManager().beginTransaction().add(R.id.container, BlankFragment.newInstance("", ""), "123").commit();
+
     }
 }

@@ -45,6 +45,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.LinearSnapHelper;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -759,13 +760,7 @@ public class Common {
 
     //region ************************************************************************************************ViewUtil
 
-    /**
-     * 设置一个控件的宽度和高度,若为空则不改变
-     *
-     * @param v
-     * @param width
-     * @param height
-     */
+    /** 设置一个控件的宽度和高度,若为空则不改变 */
     public static void setViewWH(View v, Integer width, Integer height) {
         ViewGroup.LayoutParams lp = v.getLayoutParams();
         if (width != null) {
@@ -773,6 +768,25 @@ public class Common {
         }
         if (height != null) {
             lp.height = height;
+        }
+        v.setLayoutParams(lp);
+    }
+
+    /** 设置一个控件的外边距 */
+    public static void setViewMargin(View v, Integer l, Integer t, Integer r, Integer b) {
+        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+
+        if (l != null) {
+            lp.leftMargin = l;
+        }
+        if (t != null) {
+            lp.topMargin = t;
+        }
+        if (r != null) {
+            lp.rightMargin = r;
+        }
+        if (b != null) {
+            lp.bottomMargin = b;
         }
         v.setLayoutParams(lp);
     }
@@ -817,96 +831,7 @@ public class Common {
 
     //region ************************************************************************************************security
 
-    /**
-     * 获取单个文件的MD5值！
-     *
-     * @param file
-     * @return
-     */
-    public static String getFileMD5(File file) {
-        if (!file.isFile()) {
-            return null;
-        }
-        MessageDigest digest = null;
-        FileInputStream in = null;
-        byte buffer[] = new byte[1024];
-        int len;
-        try {
-            digest = MessageDigest.getInstance("MD5");
-            in = new FileInputStream(file);
-            while ((len = in.read(buffer, 0, 1024)) != -1) {
-                digest.update(buffer, 0, len);
-            }
-            in.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        BigInteger bigInt = new BigInteger(1, digest.digest());
-        return bigInt.toString(16);
-    }
 
-    /**
-     * 获取文件夹中文件的MD5值
-     *
-     * @param file
-     * @param listChild ;true递归子目录中的文件
-     * @return
-     */
-    public static Map<String, String> getDirMD5(File file, boolean listChild) {
-        if (!file.isDirectory()) {
-            return null;
-        }
-        Map<String, String> map = new HashMap<String, String>();
-        String md5;
-        File files[] = file.listFiles();
-        for (int i = 0; i < files.length; i++) {
-            File f = files[i];
-            if (f.isDirectory() && listChild) {
-                map.putAll(getDirMD5(f, listChild));
-            } else {
-                md5 = getFileMD5(f);
-                if (md5 != null) {
-                    map.put(f.getPath(), md5);
-                }
-            }
-        }
-        return map;
-    }
-
-    /**
-     * 对一组字节数组进行算法加密,通常加密后的数据无法解密
-     *
-     * @param algorithm 指定使用哪一种算法,通常可以选择的有MD2,MD5,SHA-1,SHA-256,SHA-384,SHA-512
-     * @param bytes     需要进行加密的字节数组
-     * @return
-     * @throws NoSuchAlgorithmException
-     */
-    public static byte[] encrypt(String algorithm, byte[] bytes) throws NoSuchAlgorithmException {
-        MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
-        return messageDigest.digest(bytes);
-    }
-
-    /**
-     * 使用Base64进行加密
-     * <p>
-     * 从现在加密算法的复杂性来看Base64这种都不好意思说自己是加密，不过对于完全不懂计算机的人来说也够用了。采用Base64编码具有不可读性，即所编码的数据不会被人用肉眼所直接看到。
-     * Base64编码一般用于url的处理，或者说任何你不想让普通人一眼就知道是啥的东西都可以用Base64编码处理后再发布在网络上。F
-     * <p>
-     * Base64算法基于64个基本字符，加密后的string中只包含这64个字符
-     *
-     * @param src
-     * @return
-     */
-    public static String encodeBase64(String src) {
-        byte[] encodeBytes = Base64.encode(src.getBytes(), Base64.DEFAULT);
-        return new String(encodeBytes);
-    }
-
-    public static String decodeBase64(String src) {
-        byte[] decodeBytes = Base64.decode(src, Base64.DEFAULT);
-        return new String(decodeBytes);
-    }
 
     //endregion
 
@@ -2033,6 +1958,24 @@ public class Common {
         Uri uri = Uri.fromFile(file);
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
         context.sendBroadcast(intent);
+    }
+
+    /**
+     * 判断手机是否ROOT
+     */
+    public static boolean isSystemRoot() {
+        boolean isRoot = false;
+        try {
+            if ((!FileUtil.genFile("system", "bin", "su").exists())
+                    && (!FileUtil.genFile("system", "xbin", "su").exists())) {
+                isRoot = false;
+            } else {
+                isRoot = true;
+            }
+        } catch (Exception e) {
+            log.ew(e.getMessage(), "isSystemRoot");
+        }
+        return isRoot;
     }
 
 
